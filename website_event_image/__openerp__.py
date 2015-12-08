@@ -29,8 +29,9 @@ Add simple views pages for products
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_event'],
+    'depends': ['website_event', 'website_imagemagick'],
     'data': ['website_event_image.xml',
+    'website_event_image_data.xml'
     ],
     'application': False,
     'installable': True,

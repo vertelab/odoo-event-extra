@@ -25,14 +25,14 @@ from openerp.http import request
 from openerp import SUPERUSER_ID
 from datetime import datetime
 import werkzeug
-
+import os
 
 
 import logging
 _logger = logging.getLogger(__name__)
 
 
-class website_event_image(http.Controller):
+#~ class website_event_image(http.Controller):
 
 
 class website(models.Model):
@@ -42,8 +42,6 @@ class website(models.Model):
         """Returns a local url that points to the image field of a given browse record."""
         if record.image:
             return self.imagemagick_url(record, 'image', recipe)
-        if record.author_avatar:
-            return self.imagemagick_url(record, 'author_avatar', recipe)
         return '/imageurl/%s/ref/%s' % (os.path.join('web', 'static', 'src', 'img', 'stock_person.png'), recipe)
 
     #~ @http.route([

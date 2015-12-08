@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    <!-- event banner picture -->
+        <record id="im_event_banner" model="image.recipe">
+            <field name="name">Big resize</field>
+            <field name="recipe">image.transform(resize=width+'x'+height+'>')</field>
+        </record>
+
+        <record id="im_event_anner_one" model="image.recipe.param">
+            <field name="name">width</field>
+            <field name="value">1920</field>
+            <field name="recipe_id" ref="im_event_banner"/>
+        </record>
+
+        <record id="im_event_anner_two" model="image.recipe.param">
+            <field name="name">height</field>
+            <field name="value">640</field>
+            <field name="recipe_id" ref="im_event_banner"/>
+        </record>
+    <!-- end event banner picture -->
+
+    <!-- event big picture -->
+        <record id="im_event_big" model="image.recipe">
+            <field name="name">Banner resize</field>
+            <field name="recipe">image.transform(resize=width+'x'+height+'>')</field>
+        </record>
+
+        <record id="im_event_big_one" model="image.recipe.param">
+            <field name="name">width</field>
+            <field name="value">700</field>
+            <field name="recipe_id" ref="im_event_big"/>
+        </record>
+
+        <record id="im_event_big_two" model="image.recipe.param">
+            <field name="name">height</field>
+            <field name="value">700</field>
+            <field name="recipe_id" ref="im_event_big"/>
+        </record>
+    <!-- end event big picture -->
+
+    </data>
+</openerp>
