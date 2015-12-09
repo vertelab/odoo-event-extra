@@ -5,7 +5,7 @@
     <!-- inherit event description full -->
     <template id="inherit_event_description_full" inherit_id="website_event.event_description_full" name="Inherit event description full">
         <xpath expr="//div[@itemprop='description']" position="before">
-            <img itemprop="image" t-if="event.image" class="img img-responsive" t-att-src="website.event_image_url(event, 'website_event_image.im_event_big')" style="margin: auto; padding: 0px;"/>
+            <img itemprop="image" t-if="event.image" class="img img-responsive mb32" t-att-src="website.event_image_url(event, 'website_event_image.im_event_big')" style="margin: auto; padding: 0px;"/>
         </xpath>
     </template>
 
