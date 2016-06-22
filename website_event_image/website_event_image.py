@@ -42,7 +42,7 @@ class website(models.Model):
         """Returns a local url that points to the image field of a given browse record."""
         if record.image:
             return self.imagemagick_url(record, 'image', recipe)
-        return '/imageurl/%s/ref/%s' % (os.path.join('web', 'static', 'src', 'img', 'stock_person.png'), recipe)
+        return '/imageurl/%s/ref/%s' % (os.path.join('web', 'static', 'src', 'img', 'stock_person.png'), recipe) #TODO: This doesn't work. Fix it.
 
     #~ @http.route([
                 #~ '/eventimage/<model("event.event"):event>',
