@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_event_registration_form_inherit" model="ir.ui.view">
+            <field name="name">event.registration.form.inherit</field>
+            <field name="model">event.registration</field>
+            <field name="inherit_id" ref="event.view_event_registration_form" />
+            <field name="arch" type="xml">
+                <sheet string="Registration" position="inside">
+                    <label for="participant_ids" string="Participants" />
+                    <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_checkboxes" />
+                </sheet>
+            </field>
+        </record>
+        <record id="view_event_participant_form" model="ir.ui.view">
+            <field name="name">event.participant.form</field>
+            <field name="model">event.participant</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <sheet string="Participant">
+                    <label for="partner_id" string="Participant" />
+                    <field name="partner_id" />
+                    <label for="registration_id" string="Registration" />
+                    <field name="registration_id" />
+                </sheet>
+            </field>
+        </record>
+        <record id="view_event_participant_tree" model="ir.ui.view">
+            <field name="name">event.participant.tree</field>
+            <field name="model">event.participant</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Registration">
+                    <field name="name" />
+                    <field name="registration_id" />
+                </tree>
+            </field>
+        </record>
+        <!-- participant action window -->
+        <record id="action_participant_list" model="ir.actions.act_window">
+            <field name="res_model">event.participant</field>
+            <field name="view_type">form</field>
+            <field name="name">Participants</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+        <menuitem name="Participants" id="menu_action_participant" parent="event.event_main_menu" action="action_participant_list" groups="event.group_event_manager,event.group_event_user" />
+    </data>
+</openerp>
