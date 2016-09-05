@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
                 <sheet string="Registration" position="inside">
                     <label for="participant_ids" string="Participants" />
-                    <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_checkboxes" />
+                    <field name="participant_ids" widget="many2many_tags"/>
+                    <field name="partner_ids" widget="many2many_tags" domain="[('parent_id', '=', partner_id)]"/>
                 </sheet>
             </field>
         </record>

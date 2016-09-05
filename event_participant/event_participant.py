@@ -27,8 +27,9 @@ _logger = logging.getLogger(__name__)
 class event_registration(models.Model):
     _inherit = 'event.registration'
 
-    participant_ids = fields.Many2many(comodel_name='res.partner', string='Participants')
-
+    participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='registration_id', string='Participants')
+    #~ partner_ids = fields.One2many(comodel_name='res.partner', inverse_name='registration_id', string='Partner', domain='[("parent_id", "=", partner_id)]')
+    partner_ids = fields.Many2many(comodel_name='res.partner', relation='event_participant', string='Partner')
 
 class event_participant(models.Model):
     _name = 'event.participant'
@@ -39,6 +40,7 @@ class event_participant(models.Model):
 
     name = fields.Char(string='Name', compute='_name_')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
+    parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id')
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
 
 
@@ -46,3 +48,4 @@ class res_partner(models.Model):
     _inherit = "res.partner"
 
     participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='partner_id', string='Participants')
+    registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
