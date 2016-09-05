@@ -35,19 +35,31 @@ class event_participant(models.Model):
     _name = 'event.participant'
 
     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
-    parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id')
+    parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
+    event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events')
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
 
 
 class res_partner(models.Model):
-    _inherit = "res.partner"
+    _inherit = 'res.partner'
 
     participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='partner_id', string='Participants')
-    
+
     @api.one
     def _event_type_ids(self):
-        raise Warning(self.participant_ids,[e.event_id.type.name for e in self.participant_ids])
-        self.event_type_ids = [(6,0,[e.event_id.type.name for e in self.participant_ids])]
+        self.event_type_ids = [(6,0,[e.registration_id.event_id.type.id for e in self.participant_ids if e.state == 'done'])]
     event_type_ids = fields.One2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
 
-#    registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
+    #registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
+
+
+class event_event(models.Model):
+    _inherit = 'event.event'
+
+    count_participants = fields.Integer(string='Participants', compute='_count_participants')
+
+    @api.one
+    def _count_participants(self):
+        #~ self.count_participants = len(self.participant_ids)
+        participants = self.env['event.participant'].search([('event_id', '=', self.id)])
+        self.count_participants = len(participants)
