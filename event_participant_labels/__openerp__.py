@@ -21,18 +21,14 @@
 
 {
     'name': 'Event Participant Labels',
-    'version': '0.1',
+    'version': '0.2',
     'category': 'Event',
     'summary': 'Print Label for participants',
-    'description': """
-        Label printing
-        ==============
-        Print labels for participants using glabel batch
-""",
+    'description': """Print labels for participants using glabel batch""",
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['event_participant',],
-    'data': ['event_participant_data.xml'],
+    'depends': ['event_participant'],
+    'data': ['event_participant_data.xml','wizard/labels_wizard.xml'],
     'application': False,
     'installable': True,
 }
