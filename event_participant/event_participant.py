@@ -24,13 +24,6 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class event_registration(models.Model):
-    _inherit = 'event.registration'
-
-    participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
-    #participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='registration_id', string='Participants')
-
-
 class event_participant(models.Model):
     _name = 'event.participant'
 
@@ -38,6 +31,12 @@ class event_participant(models.Model):
     parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
     event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events')
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
+
+
+class event_registration(models.Model):
+    _inherit = 'event.registration'
+
+    participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
 
 
 class res_partner(models.Model):
@@ -50,8 +49,6 @@ class res_partner(models.Model):
         self.event_type_ids = [(6,0,[e.registration_id.event_id.type.id for e in self.participant_ids if e.state == 'done'])]
     event_type_ids = fields.One2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
 
-    #registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
-
 
 class event_event(models.Model):
     _inherit = 'event.event'
@@ -60,6 +57,5 @@ class event_event(models.Model):
 
     @api.one
     def _count_participants(self):
-        #~ self.count_participants = len(self.participant_ids)
         participants = self.env['event.participant'].search([('event_id', '=', self.id)])
         self.count_participants = len(participants)

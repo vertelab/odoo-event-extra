@@ -12,6 +12,7 @@
                 </sheet>
             </field>
         </record>
+        <!-- event_participant -->
         <record id="view_event_participant_form" model="ir.ui.view">
             <field name="name">event.participant.form</field>
             <field name="model">event.participant</field>
@@ -34,30 +35,6 @@
                     <field name="event_id" />
                     <field name="partner_id" />
                 </tree>
-            </field>
-        </record>
-        <!-- participant action window -->
-        <record id="action_participant_list_button" model="ir.actions.act_window">
-            <field name="res_model">event.participant</field>
-            <field name="view_type">form</field>
-            <field name="name">Participants</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id}</field>
-        </record>
-        <record model="ir.ui.view" id="view_event_form_inherit">
-            <field name="name">Events</field>
-            <field name="model">event.event</field>
-            <field name="inherit_id" ref="event.view_event_form"/>
-            <field name="arch" type="xml">
-                <div class="oe_right oe_button_box" position="inside">
-                    <button name="%(event_participant.action_participant_list_button)d"
-                        type="action"
-                        class="oe_stat_button oe_inline"
-                        icon="fa-user"
-                        help="Participants who go this event">
-                        <field name="count_participants" widget="statinfo" string="Participants"/>
-                    </button>
-                </div>
             </field>
         </record>
         <!-- Search view of event participant -->
@@ -89,6 +66,30 @@
                 <field name="website" position="after">
                     <field name="event_type_ids" widget="many2many_tags" />
                 </field>
+            </field>
+        </record>
+        <!-- participant action window -->
+        <record id="action_participant_list_button" model="ir.actions.act_window">
+            <field name="res_model">event.participant</field>
+            <field name="view_type">form</field>
+            <field name="name">Participants</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id}</field>
+        </record>
+        <record model="ir.ui.view" id="view_event_form_inherit">
+            <field name="name">Events</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form"/>
+            <field name="arch" type="xml">
+                <div class="oe_right oe_button_box" position="inside">
+                    <button name="%(event_participant.action_participant_list_button)d"
+                        type="action"
+                        class="oe_stat_button oe_inline"
+                        icon="fa-user"
+                        help="Participants who go this event">
+                        <field name="count_participants" widget="statinfo" string="Participants"/>
+                    </button>
+                </div>
             </field>
         </record>
     </data>
