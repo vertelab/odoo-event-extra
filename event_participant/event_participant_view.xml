@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <sheet string="Registration" position="inside">
                     <label for="participant_ids" string="Participants" />
-                    <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_checkboxes" />
+                    <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" />
                 </sheet>
             </field>
         </record>
@@ -31,7 +31,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Registration">
-                    <field name="name" />
+                    <field name="partner_id" />
                     <field name="registration_id" />
                 </tree>
             </field>
@@ -45,5 +45,18 @@
             <field name="context">{}</field>
         </record>
         <menuitem name="Participants" id="menu_action_participant" parent="event.event_main_menu" action="action_participant_list" groups="event.group_event_manager,event.group_event_user" />
+        
+        <!-- Partner -->
+            <record id="view_partner_form" model="ir.ui.view">
+      <field name="name">res.partner.form.inherit.event_types</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form" />
+      <field name="arch" type="xml">
+        <field name="website" position="after">
+          <field name="event_type_ids" widget="many2many_tags"/>
+        </field>
+      </field>
+    </record>
+        
     </data>
 </openerp>
