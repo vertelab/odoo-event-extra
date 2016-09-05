@@ -8,7 +8,12 @@
             <field name="arch" type="xml">
                 <sheet string="Registration" position="inside">
                     <label for="participant_ids" string="Participants" />
+<<<<<<< HEAD
                     <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" />
+=======
+                    <field name="participant_ids" widget="many2many_tags"/>
+                    <field name="partner_ids" widget="many2many_tags" domain="[('parent_id', '=', partner_id)]"/>
+>>>>>>> 77ed3bf80ae079ec27e7aa5ea762dc9d043334b0
                 </sheet>
             </field>
         </record>

@@ -28,12 +28,14 @@ class event_registration(models.Model):
     _inherit = 'event.registration'
 
     participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
+    #participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='registration_id', string='Participants')
 
 
 class event_participant(models.Model):
     _name = 'event.participant'
 
     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
+    parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id')
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
 
 
@@ -47,3 +49,5 @@ class res_partner(models.Model):
         raise Warning(self.participant_ids,[e.event_id.type.name for e in self.participant_ids])
         self.event_type_ids = [(6,0,[e.event_id.type.name for e in self.participant_ids])]
     event_type_ids = fields.One2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
+
+#    registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
