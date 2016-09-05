@@ -31,6 +31,7 @@ Add a participants list in event registration
     'website': 'http://www.vertel.se',
     'depends': ['event', 'base'],
     'data': ['event_participant_view.xml',
+            'security/ir.model.access.csv',
     ],
     'application': False,
     'installable': True,
