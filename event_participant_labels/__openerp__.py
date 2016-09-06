@@ -28,6 +28,7 @@
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
     'depends': ['event_participant'],
+    'external_dependencies': {'python': ['unicodecsv',], 'bin': ['glabels-3-batch']},
     'data': ['event_participant_data.xml','wizard/labels_wizard.xml'],
     'application': False,
     'installable': True,
