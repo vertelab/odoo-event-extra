@@ -54,7 +54,7 @@ class event_labels_wizard(models.TransientModel):
         temp.seek(0)
         #~ temp.close()
         #~ raise Warning("glabels-3-batch -o %s -s 25   -c 21  -i %s %s" % (outfile.name,temp.name,os.path.join(get_module_path('event_participant_labels'), 'static', 'label.glabels')))
-        res = os.system("glabels-3-batch -o %s -i %s %s" % (outfile.name,temp.name,os.path.join(get_module_path('event_participant_labels'), 'static', 'label.glabels')))
+        res = os.system("glabels-3-batch -o %s -l -C -i %s %s" % (outfile.name,temp.name,os.path.join(get_module_path('event_participant_labels'), 'static', 'label.glabels')))
         outfile.seek(0)
         #temp.close()
         label.write({'state': 'get','data': base64.b64encode(outfile.read()) })

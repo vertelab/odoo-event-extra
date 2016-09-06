@@ -29,6 +29,7 @@ class event_participant(models.Model):
 
     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
     parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
+    state = fields.Many2one(comodel_name='event.event', related='registration_id.state', string='State')
     event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events')
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
 
