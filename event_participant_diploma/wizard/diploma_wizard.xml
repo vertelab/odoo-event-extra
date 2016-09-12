@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+    <record model="ir.ui.view" id="diploma_wizard_form">
+      <field name="name">event.diploma.wizard.form</field>
+      <field name="model">event.diploma.wizard</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Print Diploma">
+          <group>
+            <field invisible="1" name="state" />
+            <field invisible="1" name="name" />
+            <div states="choose">
+              <h2>Print Diploma</h2>
+              <p>
+                Click the button
+              </p>
+            </div>
+            <div states="get">
+              <h2>Diploma Complete</h2>
+              <p>
+                Here is the diploma-file:
+                <field name="data" readonly="1" filename="name" />
+              </p>
+            </div>
+          </group>
+          <footer states="get">
+            <button string="Cancel" class="oe_link" special="cancel" />
+          </footer>
+          <footer states="choose">
+            <button name="print_diploma" string="Print" type="object" class="oe_highlight" />
+            or
+            <button string="Cancel" class="oe_link" special="cancel" />
+          </footer>
+
+        </form>
+      </field>
+    </record>
+    <act_window id="launch_diploma_wizard_form" name="Print Diploma" src_model="event.participant" res_model="event.diploma.wizard" view_mode="form" target="new" key2="client_action_multi" />
+  </data>
+</openerp>

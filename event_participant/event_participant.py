@@ -59,5 +59,5 @@ class event_event(models.Model):
         self.count_participants = len(participants)
     count_participants = fields.Integer(string='Participants', compute='_count_participants')
     participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='event_id', string='Participants')
-    course_leader = fields.Many2one(comodel_name="res.partner",string="Course Leader")
+    course_leader = fields.Many2one(comodel_name="res.partner",string="Course Leader",help="Course Leader or Main Speaker")
 

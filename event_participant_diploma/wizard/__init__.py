@@ -1,0 +1,1 @@
+import diploma_wizard
