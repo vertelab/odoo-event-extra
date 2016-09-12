@@ -90,6 +90,9 @@
                         <field name="count_participants" widget="statinfo" string="Participants"/>
                     </button>
                 </div>
+                <field name="seats_used" position="after">
+                <field name="course_leader"/>
+                </field>
             </field>
         </record>
     </data>

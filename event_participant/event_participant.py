@@ -29,8 +29,8 @@ class event_participant(models.Model):
 
     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
     parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
-    state = fields.Many2one(comodel_name='event.event', related='registration_id.state', string='State')
-    event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events')
+    state = fields.Selection(related='registration_id.state', string='State')
+    event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events',store=True)
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
 
 
@@ -53,10 +53,11 @@ class res_partner(models.Model):
 
 class event_event(models.Model):
     _inherit = 'event.event'
-
-    count_participants = fields.Integer(string='Participants', compute='_count_participants')
-
     @api.one
     def _count_participants(self):
         participants = self.env['event.participant'].search([('event_id', '=', self.id)])
         self.count_participants = len(participants)
+    count_participants = fields.Integer(string='Participants', compute='_count_participants')
+    participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='event_id', string='Participants')
+    course_leader = fields.Many2one(comodel_name="res.partner",string="Course Leader")
+

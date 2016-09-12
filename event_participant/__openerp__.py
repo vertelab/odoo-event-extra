@@ -32,6 +32,7 @@ Add a participants list in event registration
     'depends': ['event', 'base'],
     'data': ['event_participant_view.xml',
             'security/ir.model.access.csv',
+            'event_participant_report.xml'
     ],
     'application': False,
     'installable': True,
