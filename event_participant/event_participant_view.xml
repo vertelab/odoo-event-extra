@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <template id="assets_backend" name="module_name assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <style>
+                    .partner_course .oe_tag { background-color: #8FFF82; }
+                </style>
+            </xpath>
+        </template>
         <record id="view_event_registration_form_inherit" model="ir.ui.view">
             <field name="name">event.registration.form.inherit</field>
             <field name="model">event.registration</field>
@@ -66,6 +73,11 @@
                 <field name="website" position="after">
                     <field name="event_type_ids" widget="many2many_tags" />
                 </field>
+                <i position="before">
+                    <group>
+                        <field name="event_type_ids" class="partner_course" widget="many2many" />
+                    </group>
+                </i>
             </field>
         </record>
         <!-- participant action window -->
