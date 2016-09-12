@@ -44,6 +44,11 @@ class res_partner(models.Model):
     _inherit = 'res.partner'
 
     participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='partner_id', string='Participants')
+    @api.one
+    def _count_participants(self):
+        participants = self.env['event.participant'].search([('partner_id', '=', self.id)])
+        self.count_participants = len(participants)
+    count_participants = fields.Integer(string='Participants', compute='_count_participants')
 
     @api.one
     def _event_type_ids(self):
