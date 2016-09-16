@@ -91,7 +91,7 @@
                         class="oe_stat_button oe_inline"
                         icon="fa-user"
                         help="Participants who went to this event" groups="event.group_event_user">
-                        <field name="count_participants" widget="statinfo" string="Participants" groups="event.group_event_user"/>
+                        <field name="count_participants" widget="statinfo" string="Participation" groups="event.group_event_user"/>
                     </button>
                 </div>
             </field>
