@@ -78,11 +78,11 @@
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
                 <field name="website" position="after">
-                    <field name="event_type_ids" widget="many2many_tags" />
+                    <field name="event_type_ids" widget="many2many_tags" groups="event.group_event_user"/>
                 </field>
                 <i position="before">
                     <group>
-                        <field name="event_type_ids" class="partner_course" widget="many2many" />
+                        <field name="event_type_ids" class="partner_course" widget="many2many" groups="event.group_event_user"/>
                     </group>
                 </i>
                 <div class="oe_right oe_button_box" position="inside">
@@ -90,8 +90,8 @@
                         type="action"
                         class="oe_stat_button oe_inline"
                         icon="fa-user"
-                        help="Participants who go this event">
-                        <field name="count_participants" widget="statinfo" string="Participants"/>
+                        help="Participants who went to this event" groups="event.group_event_user">
+                        <field name="count_participants" widget="statinfo" string="Participants" groups="event.group_event_user"/>
                     </button>
                 </div>
             </field>
