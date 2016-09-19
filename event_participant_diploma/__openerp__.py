@@ -27,9 +27,9 @@
     'description': """Print labels for participants using glabel batch""",
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['event_participant'],
-    'external_dependencies': {'python': ['pyPdf',], 'bin': ['scribus-ng']},
-    'data': ['event_participant_data.xml','wizard/diploma_wizard.xml','report/report_diploma.xml'],
+    'depends': ['event_participant', 'report_scribus'],
+    #'external_dependencies': {'python': ['pyPdf',], 'bin': ['scribus-ng']},
+    'data': ['event_participant_data.xml'],
     'application': False,
     'installable': True,
 }

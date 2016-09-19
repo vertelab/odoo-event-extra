@@ -29,7 +29,7 @@ Add a participants list in event registration
 """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['event', 'base'],
+    'depends': ['event', 'report'],
     'data': ['event_participant_view.xml',
             'security/ir.model.access.csv',
             'event_participant_report.xml'
