@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data noupdate="0"> <!-- TODO: Change to 1. Please remember this time... -->
+  <data noupdate="1"> <!-- TODO: Change to 1. Please remember this time... -->
   
     <report
-        string="Scribus Diploma"
+        string="Participant Diploma"
         id="action_participant_diploma"
-        model="res.users" 
+        model="event.participant" 
         report_type="scribus_pdf"
         name="Participant Diploma"
     />

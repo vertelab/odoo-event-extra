@@ -21,14 +21,15 @@
 
 {
     'name': 'Event Participant Diploma',
-    'version': '0.2',
+    'version': '0.3',
     'category': 'Event',
     'summary': 'Print Diplomas for participants',
-    'description': """Print labels for participants using glabel batch""",
+    'description': """Print Diplomas for participants using a Scribus template.
+        If you want to change the layout of the document, you can do that with
+        the template saved on the report record.""",
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
     'depends': ['event_participant', 'report_scribus'],
-    #'external_dependencies': {'python': ['pyPdf',], 'bin': ['scribus-ng']},
     'data': ['event_participant_data.xml'],
     'application': False,
     'installable': True,
