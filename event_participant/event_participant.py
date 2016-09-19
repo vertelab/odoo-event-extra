@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution, third party addon
-#    Copyright (C) 2004-2015 Vertel AB (<http://vertel.se>).
+#    Copyright (C) 2004-2016 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -32,6 +32,7 @@ class event_participant(models.Model):
     state = fields.Selection(related='registration_id.state', string='State')
     event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events',store=True)
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
+    note = fields.Text(string='Note',help="Good to know information, eg food allergy")
 
 
 class event_registration(models.Model):

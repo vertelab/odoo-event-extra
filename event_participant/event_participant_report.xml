@@ -79,6 +79,9 @@
                       <strong>E-mail</strong>
                     </th>
 -->
+   <th>
+                      <strong>Note</strong>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -108,7 +111,9 @@
                     <td>
                       <span t-esc="','.join([c.name for c in part.partner_id.category_id])" />
                     </td>
-
+ <td>
+                      <span t-field="part.note" />
+                    </td>
                   </tr>
                 </tbody>
               </table>

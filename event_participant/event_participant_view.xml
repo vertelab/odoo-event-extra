@@ -30,6 +30,8 @@
                     <field name="partner_id" />
                     <label for="event_id" string="Event" />
                     <field name="event_id" />
+                    <label for="note" />
+                    <field name="note" />
                 </sheet>
             </field>
         </record>
