@@ -1,2 +1,1 @@
 import event_participant
-import wizard

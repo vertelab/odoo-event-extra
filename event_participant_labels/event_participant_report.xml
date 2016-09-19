@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+      <data noupdate="1"> 
+  
+    <report
+        string="Participant Name Tags"
+        id="action_participant_labels"
+        model="event.participant" 
+        report_type="glabels"
+        name="Participant Name Tags"
+    />
+    
+    <record id="action_participant_labels" model="ir.actions.report.xml">
+        <field name="glabels_template" type="base64" file="event_participant_labels/label.glabels"/>
+    </record>
+    
+  </data>
+</openerp>

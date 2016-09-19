@@ -21,15 +21,16 @@
 
 {
     'name': 'Event Participant Labels',
-    'version': '0.2',
+    'version': '0.3',
     'category': 'Event',
-    'summary': 'Print Label for participants',
-    'description': """Print labels for participants using glabel batch""",
+    'summary': 'Print Name Tags for participants',
+    'description': """Print Name Tags (labels) for participants using gLabels-program.
+           If you want to change the layout of the document, you can do that with
+        the template saved on the report record. """,
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['event_participant'],
-    'external_dependencies': {'python': ['unicodecsv',], 'bin': ['glabels-3-batch']},
-    'data': ['event_participant_data.xml','wizard/labels_wizard.xml'],
+    'depends': ['event_participant','report_glabels'],
+    'data': ['event_participant_report.xml',],
     'application': False,
     'installable': True,
 }
