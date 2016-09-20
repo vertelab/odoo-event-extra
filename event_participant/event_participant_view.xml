@@ -15,7 +15,7 @@
             <field name="arch" type="xml">
                 <sheet string="Registration" position="inside">
                     <label for="participant_ids" string="Participants" />
-                    <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" />
+                    <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" context="{'default_parent_id': partner_id}"/>
                 </sheet>
             </field>
         </record>
