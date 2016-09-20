@@ -81,16 +81,18 @@
             <field name="arch" type="xml">
                 <field name="website" position="after">
                     <field name="event_type_ids" widget="many2many_tags" groups="event.group_event_user"/>
+<!--
                     <field name="my_context"/>
+-->
                 </field>
                 <i position="before">
-                    <div t-if=" ! record.event_type_ids.raw_value and record.event_type_ids.raw_value()">
+                    <div t-if="record.event_type_ids.raw_value">
                         <field name="event_type_ids" class="partner_course"  groups="event.group_event_user"  />
                     </div>
                 </i>
-                <kanban position="inside">
-                        <field name="event_type_ids"/>
-                </kanban>
+                <xpath expr="//kanban/field[@name='color']" position="after">
+                    <field name="event_type_ids"/>
+                </xpath>
                 <div class="oe_right oe_button_box" position="inside">
                     <button name="%(event_participant.action_participant_partner_button)d"
                         type="action"
@@ -147,7 +149,7 @@
                 </field>
             </field>
         </record>
-        
-        
+
+
     </data>
 </openerp>
