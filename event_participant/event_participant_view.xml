@@ -87,6 +87,9 @@
                         <field name="event_type_ids" class="partner_course" widget="many2many" groups="event.group_event_user"/>
                     </group>
                 </i>
+                <kanban position="inside">
+                        <field name="event_type_ids"/>
+                </kanban>
                 <div class="oe_right oe_button_box" position="inside">
                     <button name="%(event_participant.action_participant_partner_button)d"
                         type="action"

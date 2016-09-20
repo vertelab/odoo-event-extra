@@ -54,7 +54,7 @@ class res_partner(models.Model):
     @api.one
     def _event_type_ids(self):
         self.event_type_ids = [(6,0,[e.registration_id.event_id.type.id for e in self.participant_ids if e.state == 'done'])]
-    event_type_ids = fields.One2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
+    event_type_ids = fields.Many2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
 
 
 class event_event(models.Model):
