@@ -52,11 +52,16 @@ class res_partner(models.Model):
     count_participants = fields.Integer(string='Participants', compute='_count_participants')
 
     @api.one
+    @api.depends('participant_ids')
     def _event_type_ids(self):
         self.event_type_ids = [(6,0,[e.registration_id.event_id.type.id for e in self.participant_ids if e.state == 'done'])]
     event_type_ids = fields.Many2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
-
-
+    @api.one
+    def _my_context(self):
+        self.my_context = self._context
+        #~ _logger.warning('My context',self._context,self.env.context)
+    my_context = fields.Text(compute='_my_context')
+    
 class event_event(models.Model):
     _inherit = 'event.event'
     @api.one
