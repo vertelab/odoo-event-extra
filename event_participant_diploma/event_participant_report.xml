@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data noupdate="1"> <!-- TODO: Change to 1. Please remember this time... -->
-  
+
     <report
         string="Participant Diploma"
         id="action_participant_diploma"
-        model="event.participant" 
+        model="event.participant"
         report_type="scribus_pdf"
-        name="Participant Diploma"
+        name="diploma.sla"
     />
-    
+
     <record id="action_participant_diploma" model="ir.actions.report.xml">
         <field name="scribus_template" type="base64" file="event_participant_diploma/diploma.sla"/>
     </record>
-    
+
   </data>
 </openerp>

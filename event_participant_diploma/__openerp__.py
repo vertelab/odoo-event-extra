@@ -30,7 +30,7 @@
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
     'depends': ['event_participant', 'report_scribus'],
-    'data': ['event_participant_data.xml'],
+    'data': ['event_participant_report.xml'],
     'application': False,
     'installable': True,
 }

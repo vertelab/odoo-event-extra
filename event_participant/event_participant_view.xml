@@ -14,8 +14,8 @@
             <field name="inherit_id" ref="event.view_event_registration_form" />
             <field name="arch" type="xml">
                 <sheet string="Registration" position="inside">
-                    <label for="participant_ids" string="Participants" />
-                    <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" context="{'default_parent_id': partner_id}"/>
+                    <label for="participant_ids" attrs="{'invisible': [('partner_id', '=', False)]}" string="Participants" />
+                    <field name="participant_ids" attrs="{'invisible': [('partner_id', '=', False)]}" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" context="{'default_parent_id': partner_id}"/>
                 </sheet>
             </field>
         </record>

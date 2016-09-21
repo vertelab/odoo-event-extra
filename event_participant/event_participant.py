@@ -39,12 +39,25 @@ class event_registration(models.Model):
     _inherit = 'event.registration'
 
     @api.one
-    #~ @api.depends('')
     @api.onchange('participant_ids')
     def _nb_register(self):
         self.nb_register = len(self.participant_ids) or 1
 
-    participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
+    #~ participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
+    _participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='registration_id', string='Participants')
+    participant_ids = fields.Many2many(comodel_name='res.partner', compute='_get_participant_ids', inverse='_set_participant_ids', string='Participants')
+
+    # get partner ids and store into field participant_ids
+    @api.one
+    def _get_participant_ids(self):
+        self.participant_ids = [(6, 0, [p.partner_id.id for p in self._participant_ids])]
+
+    # remove all partners and create a new list of participants
+    @api.one
+    def _set_participant_ids(self):
+        self._participant_ids.unlink()
+        for p in self.participant_ids:
+            self.env['event.participant'].create({'registration_id': self.id, 'partner_id': p.id})
 
 
 class res_partner(models.Model):
@@ -72,15 +85,21 @@ class event_event(models.Model):
     _inherit = 'event.event'
     @api.one
     def _count_participants(self):
-        participants = self.env['event.participant'].search([]).filtered(lambda p: p.registration_id.event_id == self.id)
-        self.count_participants = sum([r.nb_register for r in self.registration_ids])
+        #~ participants = self.env['event.participant'].search([]).filtered(lambda p: p.registration_id.event_id == self.id)
+        self.count_participants = sum([len(r.participant_ids) for r in self.registration_ids])
 
     count_participants = fields.Integer(string='Participants', compute='_count_participants')
 
     @api.one
     def _participants_ids(self):
-        participants = self.env['event.participant'].search([]).filtered(lambda p: p.registration_id.event_id == self.id)
-        self.participant_ids = [(6,0,[p.id for p in participants])]
-    participant_ids = fields.Many2many(comodel_name='event.participant', compute='_participants_ids', string='Participants')
+        #~ participants = self.env['event.participant'].search([]).filtered(lambda p: p.registration_id.event_id == self.id)
+        participants = []
+        for r in self.registration_ids:
+            for p in r._participant_ids:
+                participants.append(p.id)
+        #~ participants = [p.id for p in [r.participant_ids for r in self.registration_ids]]
+        #~ raise Warning(participants)
+        self.participant_ids = [(6,0,participants)]
+    participant_ids = fields.One2many(comodel_name='event.participant', compute='_participants_ids', string='Participants')
     course_leader = fields.Many2one(comodel_name="res.partner",string="Course Leader",help="Course Leader or Main Speaker")
 
