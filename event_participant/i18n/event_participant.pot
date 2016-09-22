@@ -1,0 +1,256 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_participant
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20160918\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-21 11:12+0000\n"
+"PO-Revision-Date: 2016-09-21 11:12+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "&bull;"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "&nbsp;-&nbsp;"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "-\n"
+"                ("
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "City"
+msgstr ""
+
+#. module: event_participant
+#: field:event.event,course_leader:0
+msgid "Course Leader"
+msgstr ""
+
+#. module: event_participant
+#: help:event.event,course_leader:0
+msgid "Course Leader or Main Speaker"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Course leader:"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,create_uid:0
+msgid "Created by"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,create_date:0
+msgid "Created on"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Current Registrations"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,display_name:0
+msgid "Display Name"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Email:"
+msgstr ""
+
+#. module: event_participant
+#: view:event.participant:event_participant.view_event_participant_form
+#: model:ir.model,name:event_participant.model_event_event
+msgid "Event"
+msgstr ""
+
+#. module: event_participant
+#: view:event.participant:event_participant.view_participant_search
+msgid "Event Participant"
+msgstr ""
+
+#. module: event_participant
+#: model:ir.model,name:event_participant.model_event_registration
+msgid "Event Registration"
+msgstr ""
+
+#. module: event_participant
+#: field:res.partner,event_type_ids:0
+msgid "Event Types"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,event_id:0
+msgid "Events"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Fax:"
+msgstr ""
+
+#. module: event_participant
+#: help:event.participant,note:0
+msgid "Good to know information, eg food allergy"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,id:0
+msgid "ID"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,__last_update:0
+msgid "Last Modified on"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,write_uid:0
+msgid "Last Updated by"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,write_date:0
+msgid "Last Updated on"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Mobile"
+msgstr ""
+
+#. module: event_participant
+#: field:res.partner,my_context:0
+msgid "My context"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Name"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,note:0
+#: view:website:event_participant.report_participant
+msgid "Note"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Number participants"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Organizer"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Page:"
+msgstr ""
+
+#. module: event_participant
+#: view:event.participant:event_participant.view_event_participant_form
+#: field:event.participant,partner_id:0
+msgid "Participant"
+msgstr ""
+
+#. module: event_participant
+#: view:event.event:event_participant.view_event_form_inherit
+#: field:event.event,count_participants:0
+#: field:event.event,participant_ids:0
+#: view:event.registration:event_participant.view_event_registration_form_inherit
+#: field:event.registration,participant_ids:0
+#: model:ir.actions.act_window,name:event_participant.action_participant_list
+#: model:ir.actions.act_window,name:event_participant.action_participant_list_button
+#: model:ir.actions.act_window,name:event_participant.action_participant_partner_button
+#: model:ir.actions.report.xml,name:event_participant.action_report_participants
+#: model:ir.ui.menu,name:event_participant.menu_action_participant
+#: field:res.partner,count_participants:0
+#: field:res.partner,participant_ids:0
+msgid "Participants"
+msgstr ""
+
+#. module: event_participant
+#: view:event.event:event_participant.view_event_form_inherit
+msgid "Participants who go this event"
+msgstr ""
+
+#. module: event_participant
+#: view:res.partner:event_participant.view_partner_form
+msgid "Participants who went to this event"
+msgstr ""
+
+#. module: event_participant
+#: view:res.partner:event_participant.view_partner_form
+msgid "Participation"
+msgstr ""
+
+#. module: event_participant
+#: model:ir.model,name:event_participant.model_res_partner
+#: view:website:event_participant.report_participant
+msgid "Partner"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Phone"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Phone:"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Place"
+msgstr ""
+
+#. module: event_participant
+#: view:event.participant:event_participant.view_event_participant_tree
+#: field:event.participant,registration_id:0
+#: view:event.registration:event_participant.view_event_registration_form_inherit
+msgid "Registration"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,state:0
+#: view:website:event_participant.report_participant
+msgid "State"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Tags"
+msgstr ""
+
+#. module: event_participant
+#: view:website:event_participant.report_participant
+msgid "Website:"
+msgstr ""
+
+#. module: event_participant
+#: field:event.participant,parent_id:0
+msgid "partner"
+msgstr ""
+
