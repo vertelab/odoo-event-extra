@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0-20160918\n"
+"Project-Id-Version: Odoo Server 8.0-20160923\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-21 11:12+0000\n"
-"PO-Revision-Date: 2016-09-21 11:12+0000\n"
+"POT-Creation-Date: 2016-09-26 14:29+0000\n"
+"PO-Revision-Date: 2016-09-26 14:29+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,22 +17,26 @@ msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "&bull;"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "&nbsp;-&nbsp;"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "-\n"
 "                ("
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "City"
 msgstr ""
 
@@ -48,6 +52,7 @@ msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Course leader:"
 msgstr ""
 
@@ -63,6 +68,7 @@ msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Current Registrations"
 msgstr ""
 
@@ -73,6 +79,7 @@ msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Email:"
 msgstr ""
 
@@ -104,6 +111,7 @@ msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Fax:"
 msgstr ""
 
@@ -133,17 +141,13 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: event_participant
-#: view:website:event_participant.report_participant
-msgid "Mobile"
-msgstr ""
-
-#. module: event_participant
 #: field:res.partner,my_context:0
 msgid "My context"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Name"
 msgstr ""
 
@@ -155,16 +159,19 @@ msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Number participants"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Organizer"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Page:"
 msgstr ""
 
@@ -179,15 +186,25 @@ msgstr ""
 #: field:event.event,count_participants:0
 #: field:event.event,participant_ids:0
 #: view:event.registration:event_participant.view_event_registration_form_inherit
+#: field:event.registration,_participant_ids:0
 #: field:event.registration,participant_ids:0
 #: model:ir.actions.act_window,name:event_participant.action_participant_list
 #: model:ir.actions.act_window,name:event_participant.action_participant_list_button
 #: model:ir.actions.act_window,name:event_participant.action_participant_partner_button
-#: model:ir.actions.report.xml,name:event_participant.action_report_participants
 #: model:ir.ui.menu,name:event_participant.menu_action_participant
 #: field:res.partner,count_participants:0
 #: field:res.partner,participant_ids:0
 msgid "Participants"
+msgstr ""
+
+#. module: event_participant
+#: model:ir.actions.report.xml,name:event_participant.action_report_participants
+msgid "Participants List"
+msgstr ""
+
+#. module: event_participant
+#: model:ir.actions.report.xml,name:event_participant.action_report_participants_audience
+msgid "Participants List Audience"
 msgstr ""
 
 #. module: event_participant
@@ -208,21 +225,19 @@ msgstr ""
 #. module: event_participant
 #: model:ir.model,name:event_participant.model_res_partner
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Partner"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
-msgid "Phone"
-msgstr ""
-
-#. module: event_participant
-#: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Phone:"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Place"
 msgstr ""
 
@@ -236,16 +251,19 @@ msgstr ""
 #. module: event_participant
 #: field:event.participant,state:0
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "State"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Tags"
 msgstr ""
 
 #. module: event_participant
 #: view:website:event_participant.report_participant
+#: view:website:event_participant.report_participant_audience
 msgid "Website:"
 msgstr ""
 

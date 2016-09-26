@@ -179,17 +179,29 @@ msgstr "Deltagare"
 
 #. module: event_participant
 #: view:event.event:event_participant.view_event_form_inherit
-#: field:event.event,count_participants:0 field:event.event,participant_ids:0
+#: field:event.event,count_participants:0
+#: field:event.event,participant_ids:0
 #: view:event.registration:event_participant.view_event_registration_form_inherit
+#: field:event.registration,_participant_ids:0
 #: field:event.registration,participant_ids:0
 #: model:ir.actions.act_window,name:event_participant.action_participant_list
 #: model:ir.actions.act_window,name:event_participant.action_participant_list_button
 #: model:ir.actions.act_window,name:event_participant.action_participant_partner_button
-#: model:ir.actions.report.xml,name:event_participant.action_report_participants
 #: model:ir.ui.menu,name:event_participant.menu_action_participant
-#: field:res.partner,count_participants:0 field:res.partner,participant_ids:0
+#: field:res.partner,count_participants:0
+#: field:res.partner,participant_ids:0
 msgid "Participants"
 msgstr "Deltagare"
+
+#. module: event_participant
+#: model:ir.actions.report.xml,name:event_participant.action_report_participants
+msgid "Participants List"
+msgstr "Deltagarlista"
+
+#. module: event_participant
+#: model:ir.actions.report.xml,name:event_participant.action_report_participants_audience
+msgid "Participants List Audience"
+msgstr "Deltagarlista åhörare"
 
 #. module: event_participant
 #: view:event.event:event_participant.view_event_form_inherit
