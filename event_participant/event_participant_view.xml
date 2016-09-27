@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+<!--
         <template id="assets_backend" name="module_name assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
+            <xpath expr="//link[last()]" position="after">
                 <style>
                     .partner_course .oe_tag { background-color: #8FFF82; }
                 </style>
             </xpath>
         </template>
+-->
         <record id="view_event_registration_form_inherit" model="ir.ui.view">
             <field name="name">event.registration.form.inherit</field>
             <field name="model">event.registration</field>
@@ -85,11 +87,6 @@
                     <field name="my_context"/>
 -->
                 </field>
-                <i position="before">
-                    <div t-if="record.event_type_ids.raw_value">
-                        <field name="event_type_ids" class="partner_course"  groups="event.group_event_user"  />
-                    </div>
-                </i>
                 <xpath expr="//kanban/field[@name='color']" position="after">
                     <field name="event_type_ids"/>
                 </xpath>
@@ -102,6 +99,9 @@
                         <field name="count_participants" widget="statinfo" string="Participation" groups="event.group_event_user"/>
                     </button>
                 </div>
+                <i position="before">
+                    <div t-if="record.event_type_ids.raw_value">Courses: <field name="event_type_ids" widget="many2many_tags" groups="event.group_event_user"/></div>
+                </i>
             </field>
         </record>
         <record id="base.action_partner_form" model="ir.actions.act_window">
