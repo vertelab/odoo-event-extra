@@ -42,13 +42,8 @@
           <t t-call="report.external_layout_header" />
           <div class="page">
             <div class="row">
-              <h3>
-                <span t-field="o.name" />
-                -
-                (
-                <span t-field="o.type" />
-                )
-              </h3>
+              <h3><span t-field="o.name" /></h3>
+              <h4>( <span t-field="o.type" /> )</h4>
               <span t-esc="o.date_begin[:-3]" />&amp;nbsp;-&amp;nbsp;<span t-esc="o.date_end[:-3]" />
               <div t-if="o.course_leader">
                 Course leader:
@@ -233,13 +228,8 @@
           <t t-call="report.external_layout_header" />
           <div class="page">
             <div class="row">
-              <h3>
-                <span t-field="o.name" />
-                -
-                (
-                <span t-field="o.type" />
-                )
-              </h3>
+              <h3><span t-field="o.name" /></h3>
+              <h4>( <span t-field="o.type" /> )</h4>
               <span t-esc="o.date_begin[:-3]" />&amp;nbsp;-&amp;nbsp;<span t-esc="o.date_end[:-3]" />
               <div t-if="o.course_leader">
                 Course leader:

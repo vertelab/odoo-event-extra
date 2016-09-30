@@ -196,7 +196,7 @@ msgstr "Deltagare"
 #. module: event_participant
 #: model:ir.actions.report.xml,name:event_participant.action_report_participants
 msgid "Participants List"
-msgstr "Deltagarlista"
+msgstr "Deltagarlista kursledare"
 
 #. module: event_participant
 #: model:ir.actions.report.xml,name:event_participant.action_report_participants_audience
