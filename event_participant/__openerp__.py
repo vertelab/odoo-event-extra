@@ -23,10 +23,12 @@
     'name': 'Event Participant',
     'version': '0.1',
     'category': 'Event',
+    'summary': 'Handles participants of an event',
     'description': """
 Add a participants list in event registration
 ===================================
 """,
+    'images': ['static/description/event_participant.jpg'],
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
     'depends': ['event', 'report'],
