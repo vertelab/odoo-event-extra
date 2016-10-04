@@ -4,7 +4,7 @@
         <template id="assets_backend" name="module_name assets" inherit_id="web.assets_backend">
             <xpath expr="//link[last()]" position="after">
                 <style>
-                    .partner_course > div > .oe_tag { background-color: #8FFF82; }
+                    .partner_course .oe_tag { background-color: #8FFF82; }
                 </style>
             </xpath>
         </template>
@@ -98,8 +98,8 @@
                     </button>
                 </div>
                 <i position="before">
-                    <div class="oe_kanban_footer_left partner_course">
-                        <field name="event_type_ids"/>
+                    <div class="oe_kanban_footer_left">
+                        <field name="event_type_ids" class="partner_course"/>
                     </div>
                 </i>
             </field>
