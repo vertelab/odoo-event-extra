@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <template id="assets_backend" name="module_name assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
+            <xpath expr="//link[last()]" position="after">
                 <style>
                     .partner_course .oe_tag { background-color: #8FFF82; }
                 </style>
@@ -85,14 +85,9 @@
                     <field name="my_context"/>
 -->
                 </field>
-                <i position="before">
-                    <div t-if="record.event_type_ids.raw_value">
-                        <field name="event_type_ids" class="partner_course"  groups="event.group_event_user"  />
-                    </div>
-                </i>
-                <xpath expr="//kanban/field[@name='color']" position="after">
-                    <field name="event_type_ids"/>
-                </xpath>
+                <field name="has_image" position="after">
+                    <field name="event_type_ids" invisible="1"/>
+                </field>
                 <div class="oe_right oe_button_box" position="inside">
                     <button name="%(event_participant.action_participant_partner_button)d"
                         type="action"
@@ -102,6 +97,11 @@
                         <field name="count_participants" widget="statinfo" string="Participation" groups="event.group_event_user"/>
                     </button>
                 </div>
+                <i position="before">
+                    <div class="oe_kanban_footer_left">
+                        <field name="event_type_ids" class="partner_course"/>
+                    </div>
+                </i>
             </field>
         </record>
         <record id="base.action_partner_form" model="ir.actions.act_window">
@@ -149,7 +149,6 @@
                 </field>
             </field>
         </record>
-
 
     </data>
 </openerp>
