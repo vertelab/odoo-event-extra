@@ -29,7 +29,12 @@ class event_participant(models.Model):
 
     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
     parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
-    state = fields.Selection(related='registration_id.state', string='State')
+    state = fields.Selection([
+            ('draft', 'Unconfirmed'),
+            ('cancel', 'Cancelled'),
+            ('open', 'Confirmed'),
+            ('done', 'Attended'),
+        ], string='Status', default='draft', readonly=True, copy=False)
     event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events')
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
     note = fields.Text(string='Note',help="Good to know information, eg food allergy")
@@ -37,21 +42,20 @@ class event_participant(models.Model):
     @api.one
     def registration_open(self):
         """ Open Registration """
-        self.registration_id.confirm_registration()
-        self.registration_id.mail_user()
+        self.state = 'open'
 
     @api.one
     def button_reg_close(self):
         """ Close Registration """
         today = fields.Datetime.now()
-        if self.registration_id.event_id.date_begin <= today:
-            self.registration_id.write({'state': 'done', 'date_closed': today})
+        if self.event_id.date_begin <= today:
+            self.state = 'done'
         else:
             raise Warning(_("You must wait for the starting day of the event to do this action."))
 
     @api.one
     def button_reg_cancel(self):
-        self.registration_id.state = 'cancel'
+        self.state = 'cancel'
 
 
 class event_registration(models.Model):
@@ -85,12 +89,10 @@ class res_partner(models.Model):
     participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='partner_id', string='Participants')
     @api.one
     def _count_participants(self):
-        participants = self.env['event.participant'].search([('partner_id', '=', self.id)])
-        self.count_participants = len(participants)
+        self.count_participants = len(self.participant_ids)
     count_participants = fields.Integer(string='Participants', compute='_count_participants')
 
     @api.one
-    @api.depends('participant_ids')
     def _event_type_ids(self):
         self.event_type_ids = [(6,0,[e.registration_id.event_id.type.id for e in self.participant_ids if e.state == 'done'])]
     event_type_ids = fields.Many2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
@@ -98,7 +100,6 @@ class res_partner(models.Model):
     @api.one
     def _my_context(self):
         self.my_context = self._context
-        #~ _logger.warning('My context',self._context,self.env.context)
     my_context = fields.Text(compute='_my_context')
 
 
