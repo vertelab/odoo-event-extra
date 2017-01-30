@@ -34,6 +34,25 @@ class event_participant(models.Model):
     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
     note = fields.Text(string='Note',help="Good to know information, eg food allergy")
 
+    @api.one
+    def registration_open(self):
+        """ Open Registration """
+        self.registration_id.confirm_registration()
+        self.registration_id.mail_user()
+
+    @api.one
+    def button_reg_close(self):
+        """ Close Registration """
+        today = fields.Datetime.now()
+        if self.registration_id.event_id.date_begin <= today:
+            self.registration_id.write({'state': 'done', 'date_closed': today})
+        else:
+            raise Warning(_("You must wait for the starting day of the event to do this action."))
+
+    @api.one
+    def button_reg_cancel(self):
+        self.registration_id.state = 'cancel'
+
 
 class event_registration(models.Model):
     _inherit = 'event.registration'
