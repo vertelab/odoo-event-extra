@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_event_form">
+            <field name="name">Events.inherit.event_participant_dermanord</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Registration']/field[@name='name']" position="replace">
+                    <field name="name" invisible="1"/>
+                    <field name="partner_id"/>
+                </xpath>
+                <xpath expr="//tree[@string='Registration']/field[@name='email']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//tree[@string='Registration']/field[@name='phone']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//tree[@string='Registration']/field[@name='state']" position="before">
+                    <field name="order_id"/>
+                    <button name="go_to_order" string="Go To Order" attrs="{'invisible': [('order_id', '=', False)]}" type="object" icon="gtk-ok"/>
+                    <field name="order_state"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
