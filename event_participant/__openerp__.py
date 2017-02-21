@@ -21,7 +21,7 @@
 
 {
     'name': 'Event Participant',
-    'version': '0.1',
+    'version': '0.2',
     'category': 'Event',
     'summary': 'Handles participants of an event',
     'description': """
