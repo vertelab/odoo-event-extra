@@ -40,6 +40,10 @@ class event_participant(models.Model):
     note = fields.Text(string='Note',help="Good to know information, eg food allergy")
 
     @api.one
+    def do_draft(self):
+        self.state = 'draft'
+
+    @api.one
     def registration_open(self):
         """ Open Registration """
         self.state = 'open'

@@ -47,6 +47,7 @@
                     <button name="registration_open" string="Confirm Registration" states="draft" type="object" icon="gtk-apply"/>
                     <button name="button_reg_close" string="Attended the Event" states="open" type="object" icon="gtk-jump-to"/>
                     <button name="button_reg_cancel" string="Cancel Registration" states="draft,open" type="object" icon="gtk-cancel"/>
+                    <button name="do_draft" string="Set To Unconfirmed" states="cancel,done" type="object" icon="gtk-undo"/>
                 </tree>
             </field>
         </record>
@@ -148,6 +149,9 @@
                         <field name="count_participants" widget="statinfo" string="Participants"/>
                     </button>
                 </div>
+                <button name="button_reg_cancel" position="after">
+                    <button string="Set To Unconfirmed" name="do_draft" states="cancel,done" type="object" icon="gtk-undo"/>
+                </button>
                 <field name="seats_used" position="after">
                 <field name="course_leader"/>
                 </field>
