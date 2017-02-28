@@ -23,6 +23,7 @@
              </p>
            </field>
         </record>
+<!--
 
         <act_window
             id="act_register_event_partner"
@@ -32,8 +33,9 @@
             view_mode="tree,form,calendar,graph"
             context="{'search_default_partner_id': [active_id], 'default_partner_id': active_id}"
             view_type="form"/>
+-->
 
-        <menuitem name="Events" id="menu_event_event" action="action_event_view" parent="mail.mail_my_stuff"  sequence="90"/>
+        <menuitem name="Event Calendar" id="menu_event_event" action="action_event_view" parent="mail.mail_my_stuff"  sequence="11"/>
 
   </data>
 </openerp>

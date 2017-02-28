@@ -29,6 +29,6 @@
 'author': 'Vertel AB',
 'website': 'http://www.vertel.se',
 'depends': ['event',],
-'data': ['event_messagemenu_view.xml', 'event_messagemenu_data.xml',],
+'data': ['event_messagemenu_view.xml'],
 'installable': True,
 }
