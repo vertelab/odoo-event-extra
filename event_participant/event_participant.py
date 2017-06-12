@@ -86,6 +86,29 @@ class event_registration(models.Model):
         for p in self.participant_ids:
             self.env['event.participant'].create({'registration_id': self.id, 'partner_id': p.id})
 
+    @api.one
+    def do_draft(self):
+        super(event_registration, self).do_draft()
+        for ep in self.mapped('_participant_ids'):
+            ep.state = 'draft'
+
+    @api.one
+    def confirm_registration(self):
+        super(event_registration, self).confirm_registration()
+        for ep in self.mapped('_participant_ids'):
+            ep.state = 'open'
+
+    @api.one
+    def button_reg_close(self):
+        super(event_registration, self).button_reg_close()
+        for ep in self.mapped('_participant_ids'):
+            ep.state = 'done'
+
+    @api.one
+    def button_reg_cancel(self):
+        super(event_registration, self).button_reg_cancel()
+        for ep in self.mapped('_participant_ids'):
+            ep.state = 'cancel'
 
 class res_partner(models.Model):
     _inherit = 'res.partner'
@@ -112,7 +135,7 @@ class event_event(models.Model):
     @api.one
     def _count_participants(self):
         #~ participants = self.env['event.participant'].search([]).filtered(lambda p: p.registration_id.event_id == self.id)
-        self.count_participants = str(sum([len(r.participant_ids) for r in self.registration_ids.filtered(lambda r: r.state not in ['cancel'])])) + '(' + str(sum([len(r.participant_ids) for r in self.registration_ids])) + ')'
+        self.count_participants = '%s (%s)' %(len(self.registration_ids.mapped('_participant_ids').filtered(lambda p: p.state not in ['cancel'])), len(self.registration_ids.mapped('_participant_ids')))
 
     count_participants = fields.Char(string='Participants', compute='_count_participants')
 
