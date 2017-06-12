@@ -26,7 +26,7 @@
     'summary': 'Handles participants of an event',
     'description': """
 Add a participants list in event registration
-===================================
+=============================================
 """,
     'images': ['static/description/event_participant.jpg'],
     'author': 'Vertel AB',

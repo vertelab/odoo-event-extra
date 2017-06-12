@@ -112,9 +112,9 @@ class event_event(models.Model):
     @api.one
     def _count_participants(self):
         #~ participants = self.env['event.participant'].search([]).filtered(lambda p: p.registration_id.event_id == self.id)
-        self.count_participants = sum([len(r.participant_ids) for r in self.registration_ids])
+        self.count_participants = str(sum([len(r.participant_ids) for r in self.registration_ids.filtered(lambda r: r.state not in ['cancel'])])) + '(' + str(sum([len(r.participant_ids) for r in self.registration_ids])) + ')'
 
-    count_participants = fields.Integer(string='Participants', compute='_count_participants')
+    count_participants = fields.Char(string='Participants', compute='_count_participants')
 
     @api.one
     def _participants_ids(self):
