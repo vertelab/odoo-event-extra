@@ -29,6 +29,7 @@ class event_participant(models.Model):
 
     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
     parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
+<<<<<<< Updated upstream
     state = fields.Selection([
             ('draft', 'Unconfirmed'),
             ('cancel', 'Cancelled'),
@@ -61,10 +62,18 @@ class event_participant(models.Model):
     def button_reg_cancel(self):
         self.state = 'cancel'
 
+=======
+    state = fields.Selection(related='registration_id.state', string='State')
+    event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events',store=True)
+    registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
+    note = fields.Text(string='Note',help="Good to know information, eg food allergy")
+
+>>>>>>> Stashed changes
 
 class event_registration(models.Model):
     _inherit = 'event.registration'
 
+<<<<<<< Updated upstream
     @api.one
     @api.onchange('participant_ids')
     def _nb_register(self):
@@ -109,6 +118,10 @@ class event_registration(models.Model):
         super(event_registration, self).button_reg_cancel()
         for ep in self.mapped('_participant_ids'):
             ep.state = 'cancel'
+=======
+    participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
+
+>>>>>>> Stashed changes
 
 class res_partner(models.Model):
     _inherit = 'res.partner'
@@ -116,24 +129,34 @@ class res_partner(models.Model):
     participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='partner_id', string='Participants')
     @api.one
     def _count_participants(self):
+<<<<<<< Updated upstream
         self.count_participants = len(self.participant_ids)
+=======
+        participants = self.env['event.participant'].search([('partner_id', '=', self.id)])
+        self.count_participants = len(participants)
+>>>>>>> Stashed changes
     count_participants = fields.Integer(string='Participants', compute='_count_participants')
 
     @api.one
     def _event_type_ids(self):
         self.event_type_ids = [(6,0,[e.registration_id.event_id.type.id for e in self.participant_ids if e.state == 'done'])]
+<<<<<<< Updated upstream
     event_type_ids = fields.Many2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
 
     @api.one
     def _my_context(self):
         self.my_context = self._context
     my_context = fields.Text(compute='_my_context')
+=======
+    event_type_ids = fields.One2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
+>>>>>>> Stashed changes
 
 
 class event_event(models.Model):
     _inherit = 'event.event'
     @api.one
     def _count_participants(self):
+<<<<<<< Updated upstream
         #~ participants = self.env['event.participant'].search([]).filtered(lambda p: p.registration_id.event_id == self.id)
         self.count_participants = '%s (%s)' %(len(self.registration_ids.mapped('_participant_ids').filtered(lambda p: p.state not in ['cancel'])), len(self.registration_ids.mapped('_participant_ids')))
 
@@ -150,5 +173,11 @@ class event_event(models.Model):
         #~ raise Warning(participants)
         self.participant_ids = [(6,0,participants)]
     participant_ids = fields.One2many(comodel_name='event.participant', compute='_participants_ids', string='Participants')
+=======
+        participants = self.env['event.participant'].search([('event_id', '=', self.id)])
+        self.count_participants = len(participants)
+    count_participants = fields.Integer(string='Participants', compute='_count_participants')
+    participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='event_id', string='Participants')
+>>>>>>> Stashed changes
     course_leader = fields.Many2one(comodel_name="res.partner",string="Course Leader",help="Course Leader or Main Speaker")
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+<!--
+                
+        <record model="ir.actions.server" id="event_participant_label">
+        <field name="name">Print labels</field>
+        <field name="state">code</field>
+        <field name="condition" eval="True"/>
+        <field name="model_id" ref="event_participant.model_event_participant"/>
+        <field name="code">
+self.pool['event.participant'].print_labels(cr,uid,context.get('active_ids', []))
+        </field>
+    </record>
+    
+    <record model="ir.values" id="event_participant_label_action_menu">
+        <field name="name">Print labels</field>
+        <field name="model">event.participant</field>
+        <field name="key2">client_action_multi</field>
+        <field name="value" eval="'ir.actions.server,%d' % event_participant_label"/>
+    </record>
+
+        <report 
+            string="Labels" 
+            id="action_report_labels" 
+            model="event.participant" 
+            report_type="qweb-pdf"
+            name="event_participant_labels.report_labels" 
+            file="event_participant_labels.report_labels" 
+        />
+
+
+        <report id="labels" model="event.participate" string="Labels" report_type="qweb-pdf" name="event_participate_labels.labels_document" file="event_participate_labels.labels_document" />
+        <template id="labels_document">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+<span t-field='o.name'/>,<span t-field='o.parent_id.name' />
+                    </t>
+                </t>
+            </t>
+        </template>
+-->
+
+
+
+        
+    </data>
+</openerp>

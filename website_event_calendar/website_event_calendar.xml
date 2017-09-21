@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <template inherit_id="website.snippets" id="snippets_custom">
+      <xpath expr="//div[@id='snippet_feature']" position="inside">
+        <div>
+          <div class="oe_snippet_thumbnail">
+            <img class="oe_snippet_thumbnail_img" src="/website_event_calendar/static/src/img/calendar.png" />
+            <span class="oe_snippet_thumbnail_title">Event Calendar</span>
+          </div>
+          <div class="oe_snippet_body event_calendar panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Event Calendar</h3>
+            </div>
+            <div class="panel-body">
+              <div class="calendar" />
+            </div>
+          </div>
+        </div>
+      </xpath>
+    </template>
+    <template id="website_event_calendar_assets_frontend" inherit_id="website.assets_frontend" name="Event Calendar assets">
+      <xpath expr="." position="inside">
+        <script type="text/javascript" src="/website_event_calendar/static/lib/date/js/date.js" />
+        <script type="text/javascript" src="/website_event_calendar/static/src/js/website_event_calendar.js" />
+        <script type="text/javascript" src="/website_event_calendar/static/lib/fullcalendar/js/fullcalendar.js" />
+      </xpath>
+    </template>
+    <template id="website_event_calendar_theme_assets" name="website assets for Event Calendar" inherit_id="website.theme">
+      <xpath expr="." position="inside">
+        <link href="/website_event_calendar/static/src/css/website_event_calendar.css" type="text/css" rel="stylesheet" />
+        <link href="/website_event_calendar/static/lib/fullcalendar/css/fullcalendar.css" type="text/css" rel="stylesheet" />
+      </xpath>
+    </template>
+    
+<!-- Event index page -->
+    <template id="event_right_calendar" inherit_id="website_event.index" active="False" customize_show="True" name="Calendar right">
+      <xpath expr="//div[@id='right_column']" position="inside">
+        <div class="row">
+          <div class="oe_snippet_body event_calendar panel panel-default col-md-12 mb16">
+            <div class="panel-heading">
+              <h3 class="panel-title">Event Calendar</h3>
+            </div>
+            <div class="panel-body">
+              <div class="calendar" />
+            </div>
+          </div>
+        </div>
+      </xpath>
+    </template>
+
+
+
+    <template id="event_middle_calendar" inherit_id="website_event.index" active="False" customize_show="True" name="Calendar middle">
+      <xpath expr="//div[@id='middle_column']" position="inside">
+        <div class="row">
+          <div class="oe_snippet_body event_calendar panel panel-default col-md-12 mb16">
+            <div class="panel-heading">
+              <h3 class="panel-title">Event Calendar</h3>
+            </div>
+            <div class="panel-body">
+              <div class="calendar" />
+            </div>
+          </div>
+        </div>
+      </xpath>
+    </template>
+
+
+  </data>
+</openerp>

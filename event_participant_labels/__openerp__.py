@@ -21,6 +21,7 @@
 
 {
     'name': 'Event Participant Labels',
+<<<<<<< Updated upstream
     'version': '0.3',
     'category': 'Event',
     'summary': 'Print Name Tags for participants',
@@ -31,6 +32,17 @@
     'website': 'http://www.vertel.se',
     'depends': ['event_participant','report_glabels'],
     'data': ['event_participant_report.xml',],
+=======
+    'version': '0.2',
+    'category': 'Event',
+    'summary': 'Print Label for participants',
+    'description': """Print labels for participants using glabel batch""",
+    'author': 'Vertel AB',
+    'website': 'http://www.vertel.se',
+    'depends': ['event_participant'],
+    'external_dependencies': {'python': ['unicodecsv',], 'bin': ['glabels-3-batch']},
+    'data': ['event_participant_data.xml','wizard/labels_wizard.xml'],
+>>>>>>> Stashed changes
     'application': False,
     'installable': True,
 }

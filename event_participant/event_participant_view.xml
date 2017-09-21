@@ -2,7 +2,11 @@
 <openerp>
     <data>
         <template id="assets_backend" name="module_name assets" inherit_id="web.assets_backend">
+<<<<<<< Updated upstream
             <xpath expr="//link[last()]" position="after">
+=======
+            <xpath expr="." position="inside">
+>>>>>>> Stashed changes
                 <style>
                     .partner_course .oe_tag { background-color: #8FFF82; }
                 </style>
@@ -14,8 +18,13 @@
             <field name="inherit_id" ref="event.view_event_registration_form" />
             <field name="arch" type="xml">
                 <sheet string="Registration" position="inside">
+<<<<<<< Updated upstream
                     <label for="participant_ids" attrs="{'invisible': [('partner_id', '=', False)]}" string="Participants" />
                     <field name="participant_ids" attrs="{'invisible': [('partner_id', '=', False)]}" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" context="{'default_parent_id': partner_id}"/>
+=======
+                    <label for="participant_ids" string="Participants" />
+                    <field name="participant_ids" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" />
+>>>>>>> Stashed changes
                 </sheet>
             </field>
         </record>
@@ -43,11 +52,14 @@
                 <tree string="Registration">
                     <field name="event_id" />
                     <field name="partner_id" />
+<<<<<<< Updated upstream
                     <field name="state"/>
                     <button name="registration_open" string="Confirm Registration" states="draft" type="object" icon="gtk-apply"/>
                     <button name="button_reg_close" string="Attended the Event" states="open" type="object" icon="gtk-jump-to"/>
                     <button name="button_reg_cancel" string="Cancel Registration" states="draft,open" type="object" icon="gtk-cancel"/>
                     <button name="do_draft" string="Set To Unconfirmed" states="cancel,done" type="object" icon="gtk-undo"/>
+=======
+>>>>>>> Stashed changes
                 </tree>
             </field>
         </record>
@@ -86,6 +98,7 @@
             <field name="arch" type="xml">
                 <field name="website" position="after">
                     <field name="event_type_ids" widget="many2many_tags" groups="event.group_event_user"/>
+<<<<<<< Updated upstream
 <!--
                     <field name="my_context"/>
 -->
@@ -93,6 +106,14 @@
                 <field name="has_image" position="after">
                     <field name="event_type_ids" invisible="1"/>
                 </field>
+=======
+                </field>
+                <i position="before">
+                    <group>
+                        <field name="event_type_ids" class="partner_course" widget="many2many" groups="event.group_event_user"/>
+                    </group>
+                </i>
+>>>>>>> Stashed changes
                 <div class="oe_right oe_button_box" position="inside">
                     <button name="%(event_participant.action_participant_partner_button)d"
                         type="action"
@@ -102,6 +123,7 @@
                         <field name="count_participants" widget="statinfo" string="Participation" groups="event.group_event_user"/>
                     </button>
                 </div>
+<<<<<<< Updated upstream
                 <i position="before">
                     <div class="oe_kanban_footer_left">
                         <field name="event_type_ids" class="partner_course"/>
@@ -125,6 +147,8 @@
                 a customer; discussions, history of business opportunities,
                 documents, etc.
               </p>
+=======
+>>>>>>> Stashed changes
             </field>
         </record>
         <!-- participant action window -->
@@ -149,14 +173,22 @@
                         <field name="count_participants" widget="statinfo" string="Participants"/>
                     </button>
                 </div>
+<<<<<<< Updated upstream
                 <button name="button_reg_cancel" position="after">
                     <button string="Set To Unconfirmed" name="do_draft" states="cancel,done" type="object" icon="gtk-undo"/>
                 </button>
+=======
+>>>>>>> Stashed changes
                 <field name="seats_used" position="after">
                 <field name="course_leader"/>
                 </field>
             </field>
         </record>
+<<<<<<< Updated upstream
 
+=======
+        
+        
+>>>>>>> Stashed changes
     </data>
 </openerp>

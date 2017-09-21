@@ -18,56 +18,56 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp import models, fields, api, _
-<<<<<<< Updated upstream
-=======
-from openerp.exceptions import except_orm, Warning, RedirectWarning
-from openerp.addons.web.http import Controller, route, request
-from openerp.modules import get_module_path
 
+from openerp import models, fields, api, _
+import base64
+from openerp.exceptions import except_orm, Warning, RedirectWarning
+from openerp.modules import get_module_path
 
 import unicodecsv
 import os
 import tempfile
->>>>>>> Stashed changes
 
 import logging
 _logger = logging.getLogger(__name__)
 
-<<<<<<< Updated upstream
+class event_labels_wizard(models.TransientModel):
+    _name = 'event.labels.wizard'
+    _description = 'Labels Wizard'
 
-class event_participant(models.Model):
-    _inherit = 'event.participant'
+    data = fields.Binary('File')
+    state =  fields.Selection([('choose', 'choose'), ('get', 'get')],default="choose") 
+    name = fields.Char(default='label.pdf')
 
-    parent_name = fields.Char(related="partner_id.parent_id.name")
-    participant_name = fields.Char(related="partner_id.name")
-    event_name = fields.Char(related="event_id.name")
-    #~ event_type = fields.Char(related="event_id.event_type.name")
-    course_leader = fields.Char(related="event_id.course_leader.name")
-    #~ event_date = fields.Datetime(related="event_id.date_start")
 
-=======
-class event_participant(models.Model):
-    _inherit = 'event.participant'
-
+   
     @api.multi
-    def Xprint_labels(self):
+    def print_labels(self,):
+        label = self[0]
+        #_logger.warning('data %s b64 %s ' % (account.data,base64.decodestring(account.data)))
+        
         temp = tempfile.NamedTemporaryFile(mode='w+t',suffix='.csv')
         outfile = tempfile.NamedTemporaryFile(mode='w+b',suffix='.pdf')
         labelwriter = unicodecsv.writer(temp,delimiter=',',encoding='utf-8')
-        for p in self:
+        for p in self.env['event.participant'].browse(self._context.get('active_ids', [])):
             labelwriter.writerow([p.partner_id.name,p.partner_id.parent_id.name])
         temp.seek(0)
         #~ temp.close()
-        res = os.system("glabels-3-batch -o %s -s 25   -c 21  -i %s %s" % (outfile.name,temp.name,os.path.join(get_module_path('event_participant_labels'), 'static', 'labels.glables')))
+        #~ raise Warning("glabels-3-batch -o %s -s 25   -c 21  -i %s %s" % (outfile.name,temp.name,os.path.join(get_module_path('event_participant_labels'), 'static', 'label.glabels')))
+        res = os.system("glabels-3-batch -o %s -l -C -i %s %s" % (outfile.name,temp.name,os.path.join(get_module_path('event_participant_labels'), 'static', 'label.glabels')))
         outfile.seek(0)
-        #~ pdf = report_obj.get_pdf(cr, uid, docids, reportname, data=options_data, context=context)
-        pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(outfile.read()))]
-        return request.make_response(outfile.read(), headers=pdfhttpheaders)
-        raise Warning(res,outfile.name,temp.name)        
-        
+        #temp.close()
+        label.write({'state': 'get','data': base64.b64encode(outfile.read()) })
+        #~ _logger.warn(res,temp.read(),temp.name,outfile.name,outfile.read())
         temp.close()
-        
-        
-        
->>>>>>> Stashed changes
+        outfile.close()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'event.labels.wizard',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': label.id,
+            'views': [(False, 'form')],
+            'target': 'new',
+        }
+
