@@ -21,7 +21,6 @@
 
 {
     'name': 'Event Participant',
-<<<<<<< Updated upstream
     'version': '0.2',
     'category': 'Event',
     'summary': 'Handles participants of an event',
@@ -30,14 +29,6 @@ Add a participants list in event registration
 =============================================
 """,
     'images': ['static/description/event_participant.jpg'],
-=======
-    'version': '0.1',
-    'category': 'Event',
-    'description': """
-Add a participants list in event registration
-===================================
-""",
->>>>>>> Stashed changes
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
     'depends': ['event', 'report'],

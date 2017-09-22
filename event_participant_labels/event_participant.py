@@ -19,22 +19,10 @@
 #
 ##############################################################################
 from openerp import models, fields, api, _
-<<<<<<< Updated upstream
-=======
-from openerp.exceptions import except_orm, Warning, RedirectWarning
-from openerp.addons.web.http import Controller, route, request
-from openerp.modules import get_module_path
-
-
-import unicodecsv
-import os
-import tempfile
->>>>>>> Stashed changes
 
 import logging
 _logger = logging.getLogger(__name__)
 
-<<<<<<< Updated upstream
 
 class event_participant(models.Model):
     _inherit = 'event.participant'
@@ -45,29 +33,3 @@ class event_participant(models.Model):
     #~ event_type = fields.Char(related="event_id.event_type.name")
     course_leader = fields.Char(related="event_id.course_leader.name")
     #~ event_date = fields.Datetime(related="event_id.date_start")
-
-=======
-class event_participant(models.Model):
-    _inherit = 'event.participant'
-
-    @api.multi
-    def Xprint_labels(self):
-        temp = tempfile.NamedTemporaryFile(mode='w+t',suffix='.csv')
-        outfile = tempfile.NamedTemporaryFile(mode='w+b',suffix='.pdf')
-        labelwriter = unicodecsv.writer(temp,delimiter=',',encoding='utf-8')
-        for p in self:
-            labelwriter.writerow([p.partner_id.name,p.partner_id.parent_id.name])
-        temp.seek(0)
-        #~ temp.close()
-        res = os.system("glabels-3-batch -o %s -s 25   -c 21  -i %s %s" % (outfile.name,temp.name,os.path.join(get_module_path('event_participant_labels'), 'static', 'labels.glables')))
-        outfile.seek(0)
-        #~ pdf = report_obj.get_pdf(cr, uid, docids, reportname, data=options_data, context=context)
-        pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(outfile.read()))]
-        return request.make_response(outfile.read(), headers=pdfhttpheaders)
-        raise Warning(res,outfile.name,temp.name)        
-        
-        temp.close()
-        
-        
-        
->>>>>>> Stashed changes

@@ -21,7 +21,6 @@
 
 {
     'name': 'Event Participant Diploma',
-<<<<<<< Updated upstream
     'version': '0.3',
     'category': 'Event',
     'summary': 'Print Diplomas for participants',
@@ -32,17 +31,6 @@
     'website': 'http://www.vertel.se',
     'depends': ['event_participant', 'report_scribus'],
     'data': ['event_participant_report.xml'],
-=======
-    'version': '0.2',
-    'category': 'Event',
-    'summary': 'Print Diplomas for participants',
-    'description': """Print labels for participants using glabel batch""",
-    'author': 'Vertel AB',
-    'website': 'http://www.vertel.se',
-    'depends': ['event_participant', 'report_scribus'],
-    #'external_dependencies': {'python': ['pyPdf',], 'bin': ['scribus-ng']},
-    'data': ['event_participant_data.xml'],
->>>>>>> Stashed changes
     'application': False,
     'installable': True,
 }
