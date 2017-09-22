@@ -36,16 +36,16 @@ class event_labels_wizard(models.TransientModel):
     _description = 'Labels Wizard'
 
     data = fields.Binary('File')
-    state =  fields.Selection([('choose', 'choose'), ('get', 'get')],default="choose") 
+    state =  fields.Selection([('choose', 'choose'), ('get', 'get')],default="choose")
     name = fields.Char(default='label.pdf')
 
 
-   
+
     @api.multi
     def print_labels(self,):
         label = self[0]
         #_logger.warning('data %s b64 %s ' % (account.data,base64.decodestring(account.data)))
-        
+
         temp = tempfile.NamedTemporaryFile(mode='w+t',suffix='.csv')
         outfile = tempfile.NamedTemporaryFile(mode='w+b',suffix='.pdf')
         labelwriter = unicodecsv.writer(temp,delimiter=',',encoding='utf-8')

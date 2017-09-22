@@ -32,7 +32,7 @@ Event Category
 """,
     'author': "Vertel AB",
     'website': "http://vertel.se",
-    'depends': ['website', 'event', 'web'],
+    'depends': ['website_event'],
     'data': [
         'website_event.xml',
     ],

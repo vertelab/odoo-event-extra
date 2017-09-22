@@ -32,7 +32,7 @@
         <link href="/website_event_calendar/static/lib/fullcalendar/css/fullcalendar.css" type="text/css" rel="stylesheet" />
       </xpath>
     </template>
-    
+
 <!-- Event index page -->
     <template id="event_right_calendar" inherit_id="website_event.index" active="False" customize_show="True" name="Calendar right">
       <xpath expr="//div[@id='right_column']" position="inside">
@@ -66,6 +66,84 @@
       </xpath>
     </template>
 
+        <record model="ir.ui.view" id="view_event_type_form">
+            <field name="name">Event type.inherited.website_event_category</field>
+            <field name="model">event.type</field>
+            <field name="inherit_id" ref="event.view_event_type_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="address_id"/>
+                    <field name="orginazer_id"/>
+                    <field name="user_id"/>
+                </field>
+                <field name="default_email_registration" position="after">
+                    <div colspan="4"><field name="description"/></div>
+                </field>
+            </field>
+        </record>
+
+        <record id="event_create_wizard_form" model="ir.ui.view">
+            <field name="name">event.create.wizard.form</field>
+            <field name="model">event.create.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Events">
+                    <h2><field name="name"/></h2>
+                    <group col="4">
+                        <field name="date_begin"/>
+                        <field name="date_end"/>
+                    </group>
+                    <group col="4">
+                        <field name="type_id" colspan="4"/>
+                        <label for="interval"/>
+                        <div colspan="3" invisible="1">
+                            <field name="interval" class="oe_inline"/>
+                            <field name="rrule_type" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <group attrs="{'invisible': [('rrule_type','!=','weekly')]}">
+                        <field name="weekday_mon"/>
+                        <field name="weekday_tue"/>
+                        <field name="weekday_wed"/>
+                        <field name="weekday_thu"/>
+                        <field name="weekday_fri"/>
+                        <field name="weekday_sat"/>
+                        <field name="weekday_sun"/>
+                    </group>
+                    <group>
+                        <field name="date_until"/>
+                    </group>
+                    <footer>
+                        <div>
+                            <button name="create_events" string="Create Events" type="object" class="oe_highlight"/> or
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="event_create_wizard_act"
+            key2="client_action_multi"
+            name="Create Events"
+            res_model="event.create.wizard"
+            src_model="event.event"
+            groups="base.group_user"
+            view_mode="form"
+            target="new"
+            view_type="form" />
+
+        <menuitem name="Create Events" id="menu_create_event" action="event_create_wizard_act" parent="event.event_main_menu" />
+
+        <template id="type_editor" name="Event Type Editor">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="container">
+                        <h2 class="text-center" t-field="type.name"/>
+                        <div t-field="type.description"/>
+                    </div>
+                </div>
+            </t>
+        </template>
 
   </data>
 </openerp>
