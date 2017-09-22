@@ -32,7 +32,7 @@
         <link href="/website_event_calendar/static/lib/fullcalendar/css/fullcalendar.css" type="text/css" rel="stylesheet" />
       </xpath>
     </template>
-    
+
 <!-- Event index page -->
     <template id="event_right_calendar" inherit_id="website_event.index" active="False" customize_show="True" name="Calendar right">
       <xpath expr="//div[@id='right_column']" position="inside">
@@ -54,7 +54,7 @@
     <template id="event_middle_calendar" inherit_id="website_event.index" active="False" customize_show="True" name="Calendar middle">
       <xpath expr="//div[@id='middle_column']" position="inside">
         <div class="row">
-          <div class="oe_snippet_body event_calendar panel panel-default col-md-12 mb16">
+          <div class="oe_snippet_body event_calendar panel panel-default col-md-12 mb16" style="padding: 0px;">
             <div class="panel-heading">
               <h3 class="panel-title">Event Calendar</h3>
             </div>
