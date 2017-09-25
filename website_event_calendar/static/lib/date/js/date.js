@@ -1,8 +1,8 @@
 /**
- * Version: 1.0 Alpha-1 
+ * Version: 1.0 Alpha-1
  * Build Date: 13-Nov-2007
  * Copyright (c) 2006-2007, Coolite Inc. (http://www.coolite.com/). All rights reserved.
- * License: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/. 
+ * License: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/.
  * Website: http://www.datejs.com/ or http://www.coolite.com/datejs/
  */
 Date.CultureInfo={name:"en-US",englishName:"English (United States)",nativeName:"English (United States)",dayNames:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],abbreviatedDayNames:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],shortestDayNames:["Su","Mo","Tu","We","Th","Fr","Sa"],firstLetterDayNames:["S","M","T","W","T","F","S"],monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],abbreviatedMonthNames:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],amDesignator:"AM",pmDesignator:"PM",firstDayOfWeek:0,twoDigitYearMax:2029,dateElementOrder:"mdy",formatPatterns:{shortDate:"M/d/yyyy",longDate:"dddd, MMMM dd, yyyy",shortTime:"h:mm tt",longTime:"h:mm:ss tt",fullDateTime:"dddd, MMMM dd, yyyy h:mm:ss tt",sortableDateTime:"yyyy-MM-ddTHH:mm:ss",universalSortableDateTime:"yyyy-MM-dd HH:mm:ssZ",rfc1123:"ddd, dd MMM yyyy HH:mm:ss GMT",monthDay:"MMMM dd",yearMonth:"MMMM, yyyy"},regexPatterns:{jan:/^jan(uary)?/i,feb:/^feb(ruary)?/i,mar:/^mar(ch)?/i,apr:/^apr(il)?/i,may:/^may/i,jun:/^jun(e)?/i,jul:/^jul(y)?/i,aug:/^aug(ust)?/i,sep:/^sep(t(ember)?)?/i,oct:/^oct(ober)?/i,nov:/^nov(ember)?/i,dec:/^dec(ember)?/i,sun:/^su(n(day)?)?/i,mon:/^mo(n(day)?)?/i,tue:/^tu(e(s(day)?)?)?/i,wed:/^we(d(nesday)?)?/i,thu:/^th(u(r(s(day)?)?)?)?/i,fri:/^fr(i(day)?)?/i,sat:/^sa(t(urday)?)?/i,future:/^next/i,past:/^last|past|prev(ious)?/i,add:/^(\+|after|from)/i,subtract:/^(\-|before|ago)/i,yesterday:/^yesterday/i,today:/^t(oday)?/i,tomorrow:/^tomorrow/i,now:/^n(ow)?/i,millisecond:/^ms|milli(second)?s?/i,second:/^sec(ond)?s?/i,minute:/^min(ute)?s?/i,hour:/^h(ou)?rs?/i,week:/^w(ee)?k/i,month:/^m(o(nth)?s?)?/i,day:/^d(ays?)?/i,year:/^y((ea)?rs?)?/i,shortMeridian:/^(a|p)/i,longMeridian:/^(a\.?m?\.?|p\.?m?\.?)/i,timezone:/^((e(s|d)t|c(s|d)t|m(s|d)t|p(s|d)t)|((gmt)?\s*(\+|\-)\s*\d\d\d\d?)|gmt)/i,ordinalSuffix:/^\s*(st|nd|rd|th)/i,timeContext:/^\s*(\:|a|p)/i},abbreviatedTimeZoneStandard:{GMT:"-000",EST:"-0400",CST:"-0500",MST:"-0600",PST:"-0700"},abbreviatedTimeZoneDST:{GMT:"-000",EDT:"-0500",CDT:"-0600",MDT:"-0700",PDT:"-0800"}};
@@ -109,13 +109,13 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
  * @author: Coolite Inc. http://www.coolite.com/
  * @date: 2008-04-13
  * @copyright: Copyright (c) 2006-2008, Coolite Inc. (http://www.coolite.com/). All rights reserved.
- * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/. 
+ * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/.
  * @website: http://www.datejs.com/
  */
- 
+
 (function () {
-    var $D = Date, 
-        $P = $D.prototype, 
+    var $D = Date,
+        $P = $D.prototype,
         $f = [],
         p = function (s, l) {
             if (!l) {
@@ -125,7 +125,7 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
         };
 
     /**
-     * Converts a PHP format string to Java/.NET format string. 
+     * Converts a PHP format string to Java/.NET format string.
      * A PHP format string can be used with .$format or .format.
      * A Java/.NET format string can be used with .toString().
      * The .parseExact function will only accept a Java/.NET format string
@@ -134,16 +134,16 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
      <pre>
      var f1 = "%m/%d/%y"
      var f2 = Date.normalizeFormat(f1); // "MM/dd/yy"
-     
+
      new Date().format(f1);    // "04/13/08"
      new Date().$format(f1);   // "04/13/08"
      new Date().toString(f2);  // "04/13/08"
-     
+
      var date = Date.parseExact("04/13/08", f2); // Sun Apr 13 2008
      </pre>
      * @param {String}   A PHP format string consisting of one or more format spcifiers.
      * @return {String}  The PHP format converted to a Java/.NET format string.
-     */        
+     */
     $D.normalizeFormat = function (format) {
         $f = [];
         var t = new Date().$format(format);
@@ -152,14 +152,14 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
 
     /**
      * Format a local Unix timestamp according to locale settings
-     * 
+     *
      * Example
      <pre>
      Date.strftime("%m/%d/%y", new Date());       // "04/13/08"
      Date.strftime("c", "2008-04-13T17:52:03Z");  // "04/13/08"
      </pre>
      * @param {String}   A format string consisting of one or more format spcifiers [Optional].
-     * @param {Number}   The number representing the number of seconds that have elapsed since January 1, 1970 (local time). 
+     * @param {Number}   The number representing the number of seconds that have elapsed since January 1, 1970 (local time).
      * @return {String}  A string representation of the current Date object.
      */
     $D.strftime = function (format, time) {
@@ -167,9 +167,9 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
     };
 
     /**
-     * Parse any textual datetime description into a Unix timestamp. 
+     * Parse any textual datetime description into a Unix timestamp.
      * A Unix timestamp is the number of seconds that have elapsed since January 1, 1970 (midnight UTC/GMT).
-     * 
+     *
      * Example
      <pre>
      Date.strtotime("04/13/08");              // 1208044800
@@ -188,9 +188,9 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
     /**
      * Converts the value of the current Date object to its equivalent string representation using a PHP/Unix style of date format specifiers.
      *
-     * The following descriptions are from http://www.php.net/strftime and http://www.php.net/manual/en/function.date.php. 
+     * The following descriptions are from http://www.php.net/strftime and http://www.php.net/manual/en/function.date.php.
      * Copyright � 2001-2008 The PHP Group
-     * 
+     *
      * Format Specifiers
      <pre>
     Format  Description                                                                  Example
@@ -206,7 +206,7 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
      %e     day of the month as a decimal number, a single digit is preceded by a space  "1" to "31"
      %g     like %G, but without the century                                             "08"
      %G     The 4-digit year corresponding to the ISO week number (see %V).              "2008"
-            This has the same format and value as %Y, except that if the ISO week number 
+            This has the same format and value as %Y, except that if the ISO week number
             belongs to the previous or next year, that year is used instead.
      %h     same as %b                                                                   "Jan" through "Dec"
      %H     hour as a decimal number using a 24-hour clock                               "00" to "23"
@@ -226,9 +226,9 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
      %U     week number of the current year as a decimal number, starting with the       "0" to ("52" or "53")
             first Sunday as the first day of the first week
      %V     The ISO 8601:1988 week number of the current year as a decimal number,       "00" to ("52" or "53")
-            range 01 to 53, where week 1 is the first week that has at least 4 days 
-            in the current year, and with Monday as the first day of the week. 
-            (Use %G or %g for the year component that corresponds to the week number 
+            range 01 to 53, where week 1 is the first week that has at least 4 days
+            in the current year, and with Monday as the first day of the week.
+            (Use %G or %g for the year component that corresponds to the week number
             for the specified timestamp.)
      %W     week number of the current year as a decimal number, starting with the       "00" to ("52" or "53")
             first Monday as the first day of the first week
@@ -238,9 +238,9 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
      %y     year as a decimal number without a century                                   "00" "99"
      %Y     year as a decimal number including the century                               "2008"
      %Z     time zone or name or abbreviation                                            "UTC", "EST", "PST"
-     %z     same as %Z 
+     %z     same as %Z
      %%     a literal "%" character                                                      "%"
-      
+
      d      Day of the month, 2 digits with leading zeros                                "01" to "31"
      D      A textual representation of a day, three letters                             "Mon" through "Sun"
      j      Day of the month without leading zeros                                       "1" to "31"
@@ -248,7 +248,7 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
      N      ISO-8601 numeric representation of the day of the week (added in PHP 5.1.0)  "1" (for Monday) through "7" (for Sunday)
      S      English ordinal suffix for the day of the month, 2 characters                "st", "nd", "rd" or "th". Works well with j
      w      Numeric representation of the day of the week                                "0" (for Sunday) through "6" (for Saturday)
-     z      The day of the year (starting from "0")                                      "0" through "365"      
+     z      The day of the year (starting from "0")                                      "0" through "365"
      W      ISO-8601 week number of year, weeks starting on Monday                       "00" to ("52" or "53")
      F      A full textual representation of a month, such as January or March           "January" through "December"
      m      Numeric representation of a month, with leading zeros                        "01" through "12"
@@ -257,7 +257,7 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
      t      Number of days in the given month                                            "28" through "31"
      L      Whether it's a leap year                                                     "1" if it is a leap year, "0" otherwise
      o      ISO-8601 year number. This has the same value as Y, except that if the       "2008"
-            ISO week number (W) belongs to the previous or next year, that year 
+            ISO week number (W) belongs to the previous or next year, that year
             is used instead.
      Y      A full numeric representation of a year, 4 digits                            "2008"
      y      A two digit representation of a year                                         "08"
@@ -280,20 +280,20 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
             always negative, and for those east of UTC is always positive.
      c      ISO 8601 date                                                                "2004-02-12T15:19:21+00:00"
      r      RFC 2822 formatted date                                                      "Thu, 21 Dec 2000 16:01:07 +0200"
-     U      Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)                   "0"     
+     U      Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)                   "0"
      </pre>
      * @param {String}   A format string consisting of one or more format spcifiers [Optional].
      * @return {String}  A string representation of the current Date object.
      */
-    $P.$format = function (format) { 
-        var x = this, 
+    $P.$format = function (format) {
+        var x = this,
             y,
             t = function (v) {
                 $f.push(v);
                 return x.toString(v);
             };
 
-        return format ? format.replace(/(%|\\)?.|%%/g, 
+        return format ? format.replace(/(%|\\)?.|%%/g,
         function (m) {
             if (m.charAt(0) === "\\" || m.substring(0, 2) === "%%") {
                 return m.replace("\\", "").replace("%%", "%");
@@ -326,7 +326,7 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
             case "%U":
                 var d1 = x.clone().set({month: 0, day: 1}).addDays(-1).moveToDayOfWeek(0),
                     d2 = x.clone().addDays(1).moveToDayOfWeek(0, -1);
-                return (d2 < d1) ? "00" : p((d2.getOrdinalNumber() - d1.getOrdinalNumber()) / 7 + 1);                
+                return (d2 < d1) ? "00" : p((d2.getOrdinalNumber() - d1.getOrdinalNumber()) / 7 + 1);
             case "W":
             case "%V":
                 return x.getISOWeek();
@@ -392,7 +392,7 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
             case "e":
             case "T":
             case "%z":
-            case "%Z":            
+            case "%Z":
                 return x.getTimezone();
             case "Z":
                 return x.getTimezoneOffset() * -60;
@@ -414,7 +414,7 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
             case "%t":
                 return "\\t";
             case "%r":
-                return t("hh:mm tt");                
+                return t("hh:mm tt");
             case "%R":
                 return t("H:mm");
             case "%T":
@@ -430,8 +430,8 @@ return((r[1].length===0)?r[0]:null);};};Date.parseExact=function(s,fx){return Da
         }
         ) : this._toString();
     };
-    
+
     if (!$P.format) {
         $P.format = $P.$format;
     }
-}());    
+}());

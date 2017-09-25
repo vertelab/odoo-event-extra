@@ -8,10 +8,10 @@
             var $calendar = $el.find('.calendar');
             $calendar.html('');
             var datejs_locale = "/web/static/lib/datejs/globalization/" + $('html').attr('lang').replace("_", "-") + ".js";
-            
+
             var all_filters = {};
             var color_map = {};
-            
+
             var get_color = function(key) {
                 if (color_map[key]) {
                     return color_map[key];
@@ -20,7 +20,7 @@
                 color_map[key] = index;
                 return index;
             }
-            
+
             $.getScript(datejs_locale, function(data) {
                 var shortTimeformat = Date.CultureInfo.formatPatterns.shortTime;
                 var dateFormat = Date.CultureInfo.formatPatterns.shortDate;
@@ -39,7 +39,7 @@
                                         all_filters[c] = get_color(c);
                                     }
                                 });
-                                
+
                                 var date_delay = 1.0;
 
                                 //Mutate data for calendar
@@ -54,15 +54,15 @@
                                         }
                                         else  {
                                             events[i].className = 'cal_opacity calendar_color_'+ all_filters[-1];
-                                        }                                        
+                                        }
                                     }
                                 }
                                 callback(events);
                             }
                         });
-                    },   
+                    },
                     weekNumberTitle: _t("W"),
-                    allDayText: _t('All day'), 
+                    allDayText: _t('All day'),
                     buttonText : {
                         today: _t("Today"),
                         month: _t("Month"),
@@ -74,16 +74,16 @@
                     weekMode : 'liquid',
                     columnFormat: {
                         month: 'ddd',
-                        week: 'ddd ' + dateFormat,
+                        week: 'ddd MM-dd',
                         day: 'dddd ' + dateFormat,
                     },
                     titleFormat: {
                         month: 'MMMM yyyy',
-                        week: dateFormat + "{ '&#8212;'"+ dateFormat,
+                        week: 'yyyy-MM-dd' + "{ '&#8212;'" + 'MM-dd',
                         day: dateFormat,
                     },
                     timeFormat : {
-                       // for agendaWeek and agendaDay               
+                       // for agendaWeek and agendaDay
                        agenda: shortTimeformat + '{ - ' + shortTimeformat + '}', // 5:00 - 6:30
                         // for all other views
                         '': shortTimeformat.replace(/:mm/,'(:mm)')  // 7pm
@@ -111,7 +111,7 @@
                     eventRender: function (event, element, view) {
                         element.find('.fc-event-title').html(event.title);
                     },
-                });      
+                });
             });
         });
     });
