@@ -22,6 +22,10 @@
                     <button name="go_to_order" string="Go To Order" attrs="{'invisible': [('order_id', '=', False)]}" type="object" icon="gtk-ok"/>
                     <field name="order_state"/>
                 </xpath>
+                <field name="date_tz" position="after">
+                    <field name="security_type"/>
+                    <field name="group_ids" widget="many2many_tags" attrs="{'invisible': [('security_type','=','public')]}"/>
+                </field>
             </field>
         </record>
 
