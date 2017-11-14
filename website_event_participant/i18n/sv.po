@@ -1,0 +1,117 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_event_calendar
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0-20170817\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-19 09:55+0000\n"
+"PO-Revision-Date: 2017-09-19 11:58+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: sv\n"
+"X-Generator: Poedit 2.0.1\n"
+
+#. module: website_event_calendar
+#. openerp-web
+#: code:addons/website_event_calendar/static/src/js/website_event_calendar.js:65
+#, python-format
+msgid "All day"
+msgstr "Heldag"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Conference on Business Applications"
+msgstr "Konferens angående affärstillämpningar"
+
+#. module: website_event_calendar
+#. openerp-web
+#: code:addons/website_event_calendar/static/src/js/website_event_calendar.js:70
+#: view:website:website_event.index
+#, python-format
+msgid "Day"
+msgstr "Dag"
+
+#. module: website_event_calendar
+#: view:website:website.snippets view:website:website_event.index
+msgid "Event Calendar"
+msgstr "Evenemangskalender"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Fri"
+msgstr "fre"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Functional Webinar"
+msgstr "Webinar om funktion"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Mon"
+msgstr "mån"
+
+#. module: website_event_calendar
+#. openerp-web
+#: code:addons/website_event_calendar/static/src/js/website_event_calendar.js:68
+#: view:website:website_event.index
+#, python-format
+msgid "Month"
+msgstr "Månad"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Open Days in Los Angeles"
+msgstr "Öppet hus i Los Angeles"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Sat"
+msgstr "lör"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "September 2017"
+msgstr "september 2017"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Sun"
+msgstr "sön"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Thu"
+msgstr "tor"
+
+#. module: website_event_calendar
+#. openerp-web
+#: code:addons/website_event_calendar/static/src/js/website_event_calendar.js:67
+#: view:website:website_event.index
+#, python-format
+msgid "Today"
+msgstr "Idag"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Tue"
+msgstr "tis"
+
+#. module: website_event_calendar
+#: view:website:website_event.index
+msgid "Wed"
+msgstr "ons"
+
+#. module: website_event_calendar
+#. openerp-web
+#: code:addons/website_event_calendar/static/src/js/website_event_calendar.js:69
+#: view:website:website_event.index
+#, python-format
+msgid "Week"
+msgstr "Vecka"
