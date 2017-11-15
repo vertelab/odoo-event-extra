@@ -30,16 +30,22 @@ from openerp.addons.web import http
 from openerp.addons.web.http import request
 from openerp.addons.website_event_sale.controllers.main import website_event
 from openerp.tools.translate import _
-
+from openerp.addons.website_sale.controllers.main import get_pricelist
 
 from openerp.addons.web import http
 from openerp.addons.web.http import request
+
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class website_event_participant(website_event):
 
     @http.route(['/event/cart/update'], type='http', auth="public", methods=['POST'], website=True)
     def cart_update(self, event_id, **post):
+
+
+
         cr, uid, context = request.cr, request.uid, request.context
         ticket_obj = request.registry.get('event.event.ticket')
 
@@ -60,7 +66,7 @@ class website_event_participant(website_event):
 
 
         return request.redirect("/event/participant/update")
-        
+
     @http.route(['/event/participant/update'], type='http', auth="public", website=True)
     #~ @http.route(['/event/participant/update'], type='http', auth="public", methods=['POST'], website=True)
     def participant_update(self, event_id, **post):
@@ -69,3 +75,25 @@ class website_event_participant(website_event):
         return request.website.render("website_event_participant.event", values)
         #~ return request.redirect("/event/cart/update")
 
+    @http.route(['/render/nbr_partners'], type='json', auth="public", website=True)
+    def render_nbr_partners(self, ticket, tickets=0, **kw):
+        rows = []
+        select = ''
+        options = ''
+        comment = ''
+        if len(request.env.user.partner_id.child_ids) > 0:
+            for partner in request.env.user.partner_id.child_ids:
+                options += '<option value="%s"><p>%s</p></option>' %(partner.id, partner.name)
+        for i in range(0, int(tickets)):
+            rows.append({
+                'select': 'sel_%s-%s' %(ticket, str(i)),
+                'option': options,
+                'firstname': 'fname_%s-%s' %(ticket, str(i)),
+                'lastname': 'lname_%s-%s' %(ticket, str(i)),
+                'comment': 'com_%s-%s' %(ticket, str(i)),
+            })
+        return {
+            'is_company': request.env.user.partner_id.is_company,
+            'has_children': True if len(request.env.user.partner_id.child_ids) > 0 else False,
+            'rows': rows,
+        }

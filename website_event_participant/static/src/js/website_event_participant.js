@@ -1,118 +1,73 @@
-(function () {
-    'use strict';
-    var website = openerp.website;
-    var _t = openerp._t;
+var website = openerp.website;
+website.add_template_file('/website_event_participant/static/src/xml/templates.xml');
 
-    website.ready().then(function () {
-        website.if_dom_contains('div.event_calendar', function ($el) {
-            var $calendar = $el.find('.calendar');
-            $calendar.html('');
-            var datejs_locale = "/web/static/lib/datejs/globalization/" + $('html').attr('lang').replace("_", "-") + ".js";
-            
-            var all_filters = {};
-            var color_map = {};
-            
-            var get_color = function(key) {
-                if (color_map[key]) {
-                    return color_map[key];
+$(document).ready(function(){
+
+    $("select[name^='ticket-']").on("change", function(){
+        var self = $(this);
+        openerp.jsonRpc("/render/nbr_partners", "call", {
+            'ticket': $(this).attr('name'),
+            'tickets': $(this).val(),
+        }).done(function(data){
+            var tr = $(self.closest("tr[itemscope=itemscope]"));
+            //~ console.log(tr.closest("tbody").children());
+            //~ self.closest("tbody").find("tr").each(function() {
+                //~ if ($(this) == tr) {
+                    //~ $(this).nextAll("tr").each(function() {
+                        //~ if ($(this).attr("itemscope") != "itemscope")
+                            //~ $(this).remove();
+                        //~ if ($(this).attr("itemscope") == "itemscope")
+                            //~ return false;
+                    //~ });
+                //~ }
+            //~ });
+            var row = ''
+            $.each(data['rows'], function(key, value) {
+                var select_hidden = 'sel fa fa-caret-down fa-2x text-primary';
+                var sel = 'form-control';
+                var input_hidden = 'form-inline input-group';
+                var add = 'add fa fa-plus-circle fa-2x text-success hidden';
+                if (data['has_children']) {
+                    input_hidden = 'form-inline input-group hidden';
+                    add = 'add fa fa-plus-circle fa-2x text-success';
                 }
-                var index = (((_.keys(color_map).length + 1) * 5) % 24) + 1;
-                color_map[key] = index;
-                return index;
-            }
-            
-            $.getScript(datejs_locale, function(data) {
-                var shortTimeformat = Date.CultureInfo.formatPatterns.shortTime;
-                var dateFormat = Date.CultureInfo.formatPatterns.shortDate;
-                console.log(dateFormat);
-                $calendar.fullCalendar({
-                    events: function(start, end, callback) {
-                        $.ajax({
-                            url: '/event_calendar/get_events/' + Math.round(start.getTime() / 1000) + '/' + Math.round(end.getTime() / 1000),
-                            dataType: 'json',
-                            success: function(result) {
-                                //Setup colors
-                                all_filters[0] = get_color(result.contacts[0]);
-                                all_filters[-1] = get_color(-1);
-                                _.each(result.contacts, function (c) {
-                                    if (!all_filters[c] && c != result.contacts[0]) {
-                                        all_filters[c] = get_color(c);
-                                    }
-                                });
-                                
-                                var date_delay = 1.0;
-
-                                //Mutate data for calendar
-                                var events = result.events;
-                                for(var i = 0; i < events.length; i++) {
-                                    events[i].start = new Date(events[i].start).addHours(date_delay);
-                                    events[i].end = new Date(events[i].end).addHours(date_delay);
-                                    for(var j = 0; j < events[i].attendees.length; j++) {
-                                        events[i].title += '<img title="' + events[i].attendees[j].name + '" class="attendee_head" src="/web/binary/image?model=res.partner&field=image_small&id=' + events[i].attendees[j].id + '" />';
-                                        if (all_filters[events[i].color] !== undefined) {
-                                            events[i].className = 'calendar_color_' + all_filters[events[i].color];
-                                        }
-                                        else  {
-                                            events[i].className = 'cal_opacity calendar_color_'+ all_filters[-1];
-                                        }                                        
-                                    }
-                                }
-                                callback(events);
-                            }
-                        });
-                    },   
-                    weekNumberTitle: _t("W"),
-                    allDayText: _t('All day'), 
-                    buttonText : {
-                        today: _t("Today"),
-                        month: _t("Month"),
-                        week: _t("Week"),
-                        day: _t("Day")
-                    },
-                    aspectRatio: 1.8,
-                    snapMinutes: 15,
-                    weekMode : 'liquid',
-                    columnFormat: {
-                        month: 'ddd',
-                        week: 'ddd ' + dateFormat,
-                        day: 'dddd ' + dateFormat,
-                    },
-                    titleFormat: {
-                        month: 'MMMM yyyy',
-                        week: dateFormat + "{ '&#8212;'"+ dateFormat,
-                        day: dateFormat,
-                    },
-                    timeFormat : {
-                       // for agendaWeek and agendaDay               
-                       agenda: shortTimeformat + '{ - ' + shortTimeformat + '}', // 5:00 - 6:30
-                        // for all other views
-                        '': shortTimeformat.replace(/:mm/,'(:mm)')  // 7pm
-                    },
-                    axisFormat : shortTimeformat.replace(/:mm/,'(:mm)'),
-                    weekNumbers: true,
-                    monthNames: Date.CultureInfo.monthNames,
-                    monthNamesShort: Date.CultureInfo.abbreviatedMonthNames,
-                    dayNames: Date.CultureInfo.dayNames,
-                    dayNamesShort: Date.CultureInfo.abbreviatedDayNames,
-                    firstDay: Date.CultureInfo.firstDayOfWeek,
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay'
-                    },
-                    eventAfterRender: function (event, element, view) {
-                        if ((view.name !== 'month') && (((event.end-event.start)/60000)<=30)) {
-                            //if duration is too small, we see the html code of img
-                            var current_title = $(element.find('.fc-event-time')).text();
-                            var new_title = current_title.substr(0,current_title.indexOf("<img")>0?current_title.indexOf("<img"):current_title.length);
-                            element.find('.fc-event-time').html(new_title);
-                        }
-                    },
-                    eventRender: function (event, element, view) {
-                        element.find('.fc-event-title').html(event.title);
-                    },
-                });      
+                else {
+                    select_hidden = 'sel fa fa-caret-down fa-2x text-primary hidden';
+                    sel = 'form-control hidden';
+                    input_hidden = 'form-inline input-group hidden';
+                    add = 'add fa fa-plus-circle fa-2x text-success';
+                }
+                var content = openerp.qweb.render('partner_info', {
+                    'is_company': data['is_company'],
+                    'has_children': data['has_children'],
+                    'sel': sel,
+                    'select_hidden': select_hidden,
+                    'add': add,
+                    'input_hidden': input_hidden,
+                    'select': data['rows'][key]['select'],
+                    'option': data['rows'][key]['option'],
+                    'firstname': data['rows'][key]['firstname'],
+                    'lastname': data['rows'][key]['lastname'],
+                    'comment': data['rows'][key]['comment'],
+                });
+                row += content;
             });
+            self.closest("tr").after(row);
         });
+
     });
-}());
+});
+
+$(".add").live('click', function() {
+    $(this).addClass("hidden");
+    $(this).closest("tr").find(".sel").removeClass("hidden");
+    $(this).closest("tr").find("select").addClass("hidden");
+    $(this).closest("td").find("div").removeClass("hidden");
+});
+
+$(".sel").live('click', function() {
+    $(this).addClass("hidden");
+    $(this).closest("tr").find(".add").removeClass("hidden");
+    $(this).closest("tr").find("div.input-group").addClass("hidden");
+    $(this).closest("td").find("select").removeClass("hidden");
+});

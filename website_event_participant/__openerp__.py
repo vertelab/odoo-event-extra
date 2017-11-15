@@ -37,6 +37,7 @@ Event Category
         'website_event.xml',
     ],
     'demo': [],
+    'qweb': ['static/src/xml/templates.xml'],
     'installable': True,
     'auto_install': False,
     'application': False,
