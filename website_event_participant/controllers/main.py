@@ -44,7 +44,26 @@ class website_event_participant(website_event):
     @http.route(['/event/cart/update'], type='http', auth="public", methods=['POST'], website=True)
     def cart_update(self, event_id, **post):
 
+        _logger.warn(post)
 
+        participants = request.env['sale.order.line.participant'].browse([])
+        for k,v in post.items():
+            if k.split('-')[0] == 'fname_ticket' and post.get(k) != '':
+                if post.get(k.replace('fname_ticket', 'sel_ticket')) == '':
+                    partner = request.env[res.partner].create({
+                        'name': post.get(k) + (post.get(k.replace('fname_ticket', 'lname_ticket'))),
+                        'parent_id': request.env.user.partner_id.id,
+                    })
+                    participants |= request.env['sale.order.line.participant'].create({
+                        'partner_id': partner.id,
+                        'comment': post.get(k.replace('fname_ticket', 'com_ticket')),
+                    })
+            if k.split('-')[0] == 'fname_ticket' and post.get(k) == '' and k.split('-')[0] == 'lname_ticket' and post.get(k.replace('fname_ticket', 'lname_ticket')) == '':
+                if post.get(k.replace('fname_ticket', 'sel_ticket')) != '':
+                    participants |= request.env['sale.order.line.participant'].create({
+                        'partner_id': request.env['res.partner'].browse(int(post.get(k.replace('fname_ticket', 'sel_ticket')))),
+                        'comment': post.get(k.replace('fname_ticket', 'com_ticket')),
+                    })
 
         cr, uid, context = request.cr, request.uid, request.context
         ticket_obj = request.registry.get('event.event.ticket')
@@ -58,7 +77,10 @@ class website_event_participant(website_event):
             ticket_id = key.split("-")[0] == 'ticket' and int(key.split("-")[1]) or None
             ticket = ticket_obj.browse(cr, SUPERUSER_ID, ticket_id, context=context)
             order = request.website.sale_get_order(force_create=1)
-            order.with_context(event_ticket_id=ticket.id)._cart_update(product_id=ticket.product_id.id, add_qty=quantity)
+            line_dict = order.with_context(event_ticket_id=ticket.id)._cart_update(product_id=ticket.product_id.id, add_qty=quantity)
+            request.env['sale.order.line'].browse(line_dict.get('line_id')).write({
+                'participant_ids': (6, _, participants),
+            })
 
         if not sale:
             return request.redirect("/event/%s" % event_id)

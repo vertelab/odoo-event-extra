@@ -29,3 +29,15 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class sale_order_line_participant(models.Model):
+    _name = 'sale.order.line.participant'
+
+    parnter_id = fields.Many2one(comodel_name='res.partner', string='Partner')
+    comment = fields.Text(string='Comment')
+    sale_order_line_id = fields.Many2one(comodel_name='sale.order.line', string='Sale Order Line')
+
+
+class sale_order_line(models.Model):
+    _inherit = 'sale.order.line'
+
+    participant_ids = fields.One2many(comodel_name='sale.order.line.participant', inverse_name='sale_order_line_id', string='Participants')
