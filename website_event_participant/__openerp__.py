@@ -20,15 +20,14 @@
 ##############################################################################
 
 {
-    'name': 'Event Category',
-    'category': 'website',
-    'summary': 'Using Category as template for event on website.',
+    'name': 'Website Event Participant',
+    'category': 'event',
+    'summary': 'Website Event Participant',
     'version': '1.0',
     'description': """
-Event Category
-==============
+Select or create partner while selecting event tickets
+======================================================
 
-* Extends category to work as template for new events
 """,
     'author': "Vertel AB",
     'website': "http://vertel.se",
