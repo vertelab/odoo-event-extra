@@ -9,18 +9,9 @@ $(document).ready(function(){
             'ticket': $(this).attr('name'),
             'tickets': $(this).val(),
         }).done(function(data){
-            var tr = $(self.closest("tr[itemscope=itemscope]"));
-            //~ console.log(tr.closest("tbody").children());
-            //~ self.closest("tbody").find("tr").each(function() {
-                //~ if ($(this) == tr) {
-                    //~ $(this).nextAll("tr").each(function() {
-                        //~ if ($(this).attr("itemscope") != "itemscope")
-                            //~ $(this).remove();
-                        //~ if ($(this).attr("itemscope") == "itemscope")
-                            //~ return false;
-                    //~ });
-                //~ }
-            //~ });
+            $(self.closest("tr[itemscope=itemscope]")).children().each(function() {
+                console.log($(this));
+            });
             var row = ''
             $.each(data['rows'], function(key, value) {
                 var select_hidden = 'sel fa fa-caret-down fa-2x text-primary';

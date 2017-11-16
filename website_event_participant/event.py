@@ -41,3 +41,18 @@ class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
     participant_ids = fields.One2many(comodel_name='sale.order.line.participant', inverse_name='sale_order_line_id', string='Participants')
+
+    @api.multi
+    def button_confirm(self):
+        res = super(sale_order_line, self).button_confirm()
+        for order_line in self:
+            registration = self.env['event.registration'].search([('event_ticket_id', '=', order_line.event_ticket_id.id), ('partner_id', '=', order_line.order_id.partner_id.id)], order='create_date desc', limit=1)
+            # copy info from sale.order.line.participant to event.participant
+            for participant in order_line.participant_ids:
+                self.env['event.participant'].create({
+                    'registration_id': registration.id,
+                    'partner_id': participant.partner_id.id,
+                    'note': participant.comment,
+                    'state': 'draft',
+                })
+        return res
