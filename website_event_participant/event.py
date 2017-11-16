@@ -32,7 +32,7 @@ _logger = logging.getLogger(__name__)
 class sale_order_line_participant(models.Model):
     _name = 'sale.order.line.participant'
 
-    parnter_id = fields.Many2one(comodel_name='res.partner', string='Partner')
+    partner_id = fields.Many2one(comodel_name='res.partner', string='Partner')
     comment = fields.Text(string='Comment')
     sale_order_line_id = fields.Many2one(comodel_name='sale.order.line', string='Sale Order Line')
 

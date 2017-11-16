@@ -61,6 +61,7 @@ $(document).ready(function(){
 $(".add").live('click', function() {
     $(this).addClass("hidden");
     $(this).closest("tr").find(".sel").removeClass("hidden");
+    $(this).closest("tr").find("select").attr("value", "");
     $(this).closest("tr").find("select").addClass("hidden");
     $(this).closest("td").find("div").removeClass("hidden");
 });

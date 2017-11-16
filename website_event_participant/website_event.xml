@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+
+        <record id="view_order_line_form2" model="ir.ui.view">
+            <field name="name">sale.order.line.form2.inherited.website_event_participant</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_form2"/>
+            <field name="arch" type="xml">
+                <sheet position="inside">
+                    <field name="participant_ids">
+                        <tree>
+                            <field name="partner_id"/>
+                            <field name="comment"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </field>
+        </record>
+
         <template id="event_description_full" inherit_id="website_event_sale.event_description_full" name="Event's Ticket form">
-            <xpath expr="//tr[@itemscope='itemscope']" position="after">
-            </xpath>
-
-
 <!--
             <xpath expr="//tr[@itemtype='http://data-vocabulary.org/Offer']" position="after">
                 <span>Hello world</span>
