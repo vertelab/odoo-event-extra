@@ -34,9 +34,10 @@ Select or create partner while selecting event tickets
     'depends': ['website_event', 'event_participant'],
     'data': [
         'website_event.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [],
-    'qweb': ['static/src/xml/templates.xml'],
+    'qweb': ['static/src/xml/templates.xml',],
     'installable': True,
     'auto_install': False,
     'application': False,
