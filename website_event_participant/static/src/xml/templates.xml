@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- vim:fdl=1:
+-->
+<templates id="template" xml:space="preserve">
+    <t t-name="partner_info">
+        <td>
+            <i class="sel fa fa-caret-down fa-2x text-primary hidden" title="Select a contact person"/>
+            <select t-att-name="select" t-att-class="sel" title="Select a contact person">
+                <option value="">-- Choose A Person --</option>
+                <t t-raw="option"/>
+            </select>
+        </td>
+        <td>
+            <i t-att-class="add" title="Create a new contact person"/>
+            <div t-att-class="input_hidden">
+                <input t-att-name="firstname" class="fname form-control col-md-6" placeholder="First Name"/>
+                <span class="input-group-addon"></span>
+                <input t-att-name="lastname" class="lname form-control col-md-6" placeholder="Last Name"/>
+            </div>
+        </td>
+        <td>
+            <textarea t-att-name="comment" placeholder="Comment..." title="Write a comment"></textarea>
+        </td>
+        <td/>
+        <td/>
+    </t>
+</templates>
+

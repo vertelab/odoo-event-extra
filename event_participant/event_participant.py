@@ -27,17 +27,17 @@ _logger = logging.getLogger(__name__)
 class event_participant(models.Model):
     _name = 'event.participant'
 
+    registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
-    parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
     state = fields.Selection([
             ('draft', 'Unconfirmed'),
             ('cancel', 'Cancelled'),
             ('open', 'Confirmed'),
             ('done', 'Attended'),
         ], string='Status', default='draft', readonly=True, copy=False)
-    event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events')
-    registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
     note = fields.Text(string='Note',help="Good to know information, eg food allergy")
+    event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events')
+    parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
 
     @api.one
     def do_draft(self):
