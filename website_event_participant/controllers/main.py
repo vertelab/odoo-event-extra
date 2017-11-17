@@ -71,7 +71,7 @@ class website_event_participant(website_event):
                             # if first name is not empty and select option is empty, then create a new partner and new participant of this partner
                             partner = request.env['res.partner'].create({
                                 'name': post.get(key) + '%s' %((' ' + post.get(key.replace('fname_ticket', 'lname_ticket'))) if post.get(key.replace('fname_ticket', 'lname_ticket')) != '' else ''),
-                                'parent_id': request.env.user.partner_id.id,
+                                'parent_id': request.env.user.commercial_partner_id.partner_id.id,
                             })
                             if partner:
                                 request.env['sale.order.line.participant'].create({
@@ -98,8 +98,8 @@ class website_event_participant(website_event):
         select = ''
         options = ''
         comment = ''
-        if len(request.env.user.partner_id.child_ids) > 0:
-            for partner in request.env.user.partner_id.child_ids:
+        if len(request.env.user.partner_id.commercial_partner_id.child_ids) > 0:
+            for partner in request.env.user.partner_id.commercial_partner_id.child_ids:
                 options += '<option value="%s"><p>%s</p></option>' %(partner.id, partner.name)
         for i in range(0, int(tickets)):
             rows.append({
@@ -110,7 +110,6 @@ class website_event_participant(website_event):
                 'comment': 'com_%s-%s' %(ticket, str(i)),
             })
         return {
-            'is_company': request.env.user.partner_id.is_company,
-            'has_children': True if len(request.env.user.partner_id.child_ids) > 0 else False,
+            'has_children': True if len(request.env.user.partner_id.commercial_partner_id.child_ids) > 0 else False,
             'rows': rows,
         }
