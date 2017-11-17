@@ -20,25 +20,20 @@
 ##############################################################################
 
 {
-    'name': 'Event Invoice Confirmed',
+    'name': 'Event Invoice Release',
     'version': '0.2',
     'category': 'Event',
-    'summary': 'Invoice only confirmed registrants',
+    'summary': 'Release Event for Invoice',
     'description': """
-Add a participants list in event registration
-=============================================
-
-* Event has to be confirmed for invoice
-* Registrant has to be 
+* Event has to be released for invoice
+* Order lines will not be invoiced before this condition is met 
 
 """,
     'images': ['static/description/event_participant.jpg'],
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['event', 'report'],
-    'data': ['event_participant_view.xml',
-            'security/ir.model.access.csv',
-            'event_participant_report.xml'
+    'depends': ['website_event_sale', ],
+    'data': [ 'event_view.xml',
     ],
     'application': False,
     'installable': True,
