@@ -24,27 +24,21 @@ $(document).ready(function(){
             });
             var row = ''
             $.each(data['rows'], function(key, value) {
-                var select_hidden = 'sel fa fa-caret-down fa-2x text-primary';
-                var sel = 'form-control';
-                var input_hidden = 'form-inline input-group';
-                var add = 'add fa fa-plus-circle fa-2x text-success hidden';
-                if (data['has_children']) {
-                    input_hidden = 'form-inline input-group hidden';
-                    add = 'add fa fa-plus-circle fa-2x text-success';
-                }
-                else {
-                    select_hidden = 'sel fa fa-caret-down fa-2x text-primary hidden';
-                    sel = 'form-control hidden';
-                    input_hidden = 'form-inline input-group hidden';
-                    add = 'add fa fa-plus-circle fa-2x text-success';
+                var sel = 'sel fa fa-caret-down fa-2x text-primary hidden';
+                var selection = 'form-control';
+                var add = 'add fa fa-plus-circle fa-2x text-success';
+                var input = 'form-inline input-group hidden';
+                if (data['input']) {
+                    selection = 'form-control hidden';
+                    add = 'add fa fa-plus-circle fa-2x text-success hidden';
+                    input = 'form-inline input-group';
                 }
                 var content = openerp.qweb.render('partner_info', {
-                    'is_company': data['is_company'],
-                    'has_children': data['has_children'],
+                    'multi': data['multi'],
                     'sel': sel,
-                    'select_hidden': select_hidden,
+                    'selection': selection,
                     'add': add,
-                    'input_hidden': input_hidden,
+                    'input': input,
                     'select': data['rows'][key]['select'],
                     'option': data['rows'][key]['option'],
                     'firstname': data['rows'][key]['firstname'],
