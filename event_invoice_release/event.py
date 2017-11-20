@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution, third party addon
-#    Copyright (C) 2004-2016 Vertel AB (<http://vertel.se>).
+#    Copyright (C) 2004-2017 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -24,11 +24,14 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-
+class event_registration(models.Model):
+    _inherit = 'event.registration'
+    line_id = fields.Many2one(comodel_name='sale.order.line')
+    
 class event_event(models.Model):
     _inherit = 'event.event'
 
-    state = fields.Selection(selection_add=[('invoiced', 'Invoiced')])
+    invoice = fields.Boolean(string="Released for invoice")
 
     @api.multi
     def create_invoice(self):
@@ -39,69 +42,6 @@ class event_event(models.Model):
         }
         return res
 
-
-class website(models.Model):
-    _inherit = 'website'
-
-    @api.multi
-    def Xsale_get_order(self, force_create=False, code=None, update_pricelist=None):
-        self.ensure_one()
-        sale_order = super(website,self).sale_get_order(force_create,code,update_pricelist)
-#        sale_order.invoice_policy = 'manual'
-        return sale_order
-        
-        
-
-class sale_order(models.Model):
-    _inherit = "sale.order"
-
-    @api.multi
-    def X_cart_update(self, product_id=None, line_id=None, add_qty=0, set_qty=0,**kwargs):
-        """ Add or set product quantity, add_qty can be negative """
-        _logger.error('_cart update %s' % product_id)
-        for order in self:
-            if product_id:
-               pass
-            res = super(sale_order,order)._cart_update(product_id,line_id,add_qty,set_qty,kwargs)
-        return {'line_id': res['line_id'], 'quantity': res['quantity']}
-
-    @api.model
-    def _prepare_order_line_procurement(self,order, line, group_id=False):
-        date_planned = self._get_date_planned(order, line, order.date_order)
-        _logger.error('procurement %s %s' % (line.product_id.name,line.event_id.name))
-        return {
-            'name': line.name,
-            'origin': order.name,
-            'date_planned': date_planned,
-            'product_id': line.product_id.id,
-            'product_qty': line.product_uom_qty,
-            'product_uom': line.product_uom.id,
-            'product_uos_qty': (line.product_uos and line.product_uos_qty) or line.product_uom_qty,
-            'product_uos': (line.product_uos and line.product_uos.id) or line.product_uom.id,
-            'company_id': order.company_id.id,
-            'group_id': group_id,
-            'invoice_state': (order.order_policy == 'picking') and '2binvoiced' or 'none',
-            'sale_line_id': line.id
-        }
-        
-        
-class sale_order_line(models.Model):
-    _inherit = 'sale.order.line'
-
-    @api.model
-    def _prepare_order_line_invoice_line(self, line, account_id=False):
-        _logger.error('prepare order line invoice %s' % line.product_id.name)
-        res = super(sale_order_line, self)._prepare_order_line_invoice_line(line, account_id=account_id)
-        return res
-
-    @api.multi
-    def button_confirm(self):
-        for order_line in self:
-            if order_line.state == 'cancel':
-                continue
-            if order_line.event_id:
-                order_line.order_id.order_policy = 'manual'
-        return super(sale_order_line, self).button_confirm()
 
 class event_invoice(models.TransientModel):
     _name = "event.invoice"
@@ -122,7 +62,13 @@ class event_invoice(models.TransientModel):
         self.ensure_one()
         to_invoice = {}
         order_info = {}
-        for line in self.env['sale.order.line'].search([('event_id','=',self._context['active_ids'][0]),('invoiced','=',False)]):
+        event = self.env['event.event'].browse(self._context['active_ids'][0])
+        event.invoice = True
+        for line in self.env['sale.order.line'].search([('event_id','=',event.id),('invoiced','=',False)]):
+        #~ for line in self.env['sale.order.line'].search([('event_id','=',event.id),('invoiced','=',False)]).filtered(lambda l: l.event_registration_id.state in ['open','done']):
+            if line.event_registration_id.state == 'cancel':
+                line.state = 'exception'
+                break
             if to_invoice.get(line.order_id.partner_id.id):
                 to_invoice[line.order_id.partner_id.id].append(line)
             else:
@@ -158,12 +104,33 @@ class event_invoice(models.TransientModel):
                     'account_analytic_id': False,
                 })
                 line.state = 'done'
+                line.invoice_lines = [(4, invoice.id)]
+
             invoice.button_compute(set_total=True)
             invoices.append(invoice)
-        for line in self.env['sale.order.line'].search([('event_id','=',self._context['active_ids'][0]),('invoiced','=',False)]):
-            line.invoiced = True
-            _logger.error('%s'  % line.invoice_lines)
         res = self.env['ir.actions.act_window'].for_xml_id('account', 'action_invoice_tree')
         res['domain'] = [('id','in',[i.id for i in invoices])]
         return res
 
+class sale_order_line(models.Model):
+    _inherit = 'sale.order.line'
+
+    event_registration_id = fields.Many2one(comodel_name='event.registration')
+
+    @api.model
+    def _prepare_order_line_invoice_line(self, line, account_id=False):  # Prevent non released event-lines to be invoiced
+        #~ _logger.error('prepare order line invoice %s' % line.product_id.name)
+        if line.event_id and line.event_id.invoice == False:
+            return None
+        if line.event_registration_id and line.event_registration_id.state == 'cancel':
+            return None
+        return super(sale_order_line, self)._prepare_order_line_invoice_line(line, account_id=account_id)
+
+    @api.multi
+    def button_confirm(self):
+        res = super(sale_order_line, self).button_confirm()
+        for order_line in self: # connect registration to order line
+            registration = self.env['event.registration'].search([('event_ticket_id', '=', order_line.event_ticket_id.id), ('partner_id', '=', order_line.order_id.partner_id.id),('line_id', '=', None)], order='create_date desc',limit=1)
+            registration.line_id = order_line.id
+            order_line.event_registration_id = registration.id
+        return res

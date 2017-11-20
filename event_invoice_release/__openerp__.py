@@ -21,18 +21,18 @@
 
 {
     'name': 'Event Invoice Release',
-    'version': '0.2',
+    'version': '0.3',
     'category': 'Event',
     'summary': 'Release Event for Invoice',
     'description': """
-* Event has to be released for invoice
+* Event has to be released for invoice (invoice button on each event)
 * Order lines will not be invoiced before this condition is met 
 
 """,
     'images': ['static/description/event_participant.jpg'],
     'author': 'Vertel AB',
     'website': 'http://www.vertel.se',
-    'depends': ['website_event_sale', ],
+    'depends': ['event_sale',],
     'data': [ 'event_view.xml',
     ],
     'application': False,
