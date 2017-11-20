@@ -2,7 +2,7 @@
 <!-- vim:fdl=1:
 -->
 <templates id="template" xml:space="preserve">
-    <t t-name="partner_info">
+    <tr t-name="partner_info">
         <td>
             <i class="sel fa fa-caret-down fa-2x text-primary hidden" title="Select a contact person"/>
             <select t-att-name="select" t-att-class="sel" title="Select a contact person">
@@ -14,15 +14,15 @@
             <i t-att-class="add" title="Create a new contact person"/>
             <div t-att-class="input_hidden">
                 <input t-att-name="firstname" class="fname form-control col-md-6" placeholder="First Name"/>
-                <span class="input-group-addon"></span>
+                <span class="input-group-addon" style="padding: 0px;"></span>
                 <input t-att-name="lastname" class="lname form-control col-md-6" placeholder="Last Name"/>
             </div>
         </td>
         <td>
-            <textarea t-att-name="comment" placeholder="Comment..." title="Write a comment"></textarea>
+            <textarea t-att-name="comment" placeholder="Ev. matallergi..." title="Write a comment" rows="1"></textarea>
         </td>
         <td/>
         <td/>
-    </t>
+    </tr>
 </templates>
 

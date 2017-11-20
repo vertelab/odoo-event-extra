@@ -32,6 +32,7 @@ _logger = logging.getLogger(__name__)
 class sale_order_line_participant(models.Model):
     _name = 'sale.order.line.participant'
 
+    name = fields.Char(string='Name')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Partner')
     comment = fields.Text(string='Comment')
     sale_order_line_id = fields.Many2one(comodel_name='sale.order.line', string='Sale Order Line')
@@ -49,9 +50,15 @@ class sale_order_line(models.Model):
             registration = self.env['event.registration'].search([('event_ticket_id', '=', order_line.event_ticket_id.id), ('partner_id', '=', order_line.order_id.partner_id.id)], order='create_date desc', limit=1)
             # copy info from sale.order.line.participant to event.participant
             for participant in order_line.participant_ids:
+                partner = participant.partner_id
+                if not partner:
+                    partner = self.env['res.partner'].create({
+                        'name': participant.name,
+                    })
+                    participant.partner_id = partner.id
                 self.env['event.participant'].create({
                     'registration_id': registration.id,
-                    'partner_id': participant.partner_id.id,
+                    'partner_id': partner.id,
                     'note': participant.comment,
                     'state': 'draft',
                 })

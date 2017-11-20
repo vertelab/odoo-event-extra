@@ -10,6 +10,7 @@
                 <sheet position="inside">
                     <field name="participant_ids">
                         <tree>
+                            <field name="name"/>
                             <field name="partner_id"/>
                             <field name="comment"/>
                         </tree>

@@ -63,22 +63,22 @@ class website_event_participant(website_event):
                         if key.split('-')[0] == 'sel_ticket' and post.get(key) != '' and int(key.split('-')[1]) == ticket_id:
                             # if there's a partner has been chosen, then create a participant of this partner
                             request.env['sale.order.line.participant'].create({
+                                'name': self.env['res.partner'].browse(int(post.get(key))).name,
                                 'partner_id': int(post.get(key)),
                                 'comment': post.get(key.replace('sel_ticket', 'com_ticket')),
                                 'sale_order_line_id': line_dict.get('line_id'),
                             })
                         elif key.split('-')[0] == 'fname_ticket' and post.get(key) != '' and int(key.split('-')[1]) == ticket_id and post.get(key.replace('fname_ticket', 'sel_ticket')) == '':
-                            # if first name is not empty and select option is empty, then create a new partner and new participant of this partner
-                            partner = request.env['res.partner'].create({
+                            # if first name is not empty and select option is empty, then create a new participant
+                            #~ partner = request.env['res.partner'].create({
+                                #~ 'name': post.get(key) + '%s' %((' ' + post.get(key.replace('fname_ticket', 'lname_ticket'))) if post.get(key.replace('fname_ticket', 'lname_ticket')) != '' else ''),
+                                #~ 'parent_id': request.env.user.commercial_partner_id.partner_id.id,
+                            #~ })
+                            request.env['sale.order.line.participant'].create({
                                 'name': post.get(key) + '%s' %((' ' + post.get(key.replace('fname_ticket', 'lname_ticket'))) if post.get(key.replace('fname_ticket', 'lname_ticket')) != '' else ''),
-                                'parent_id': request.env.user.commercial_partner_id.partner_id.id,
+                                'comment': post.get(key.replace('fname_ticket', 'com_ticket')),
+                                'sale_order_line_id': line_dict.get('line_id'),
                             })
-                            if partner:
-                                request.env['sale.order.line.participant'].create({
-                                    'partner_id': partner.id,
-                                    'comment': post.get(key.replace('fname_ticket', 'com_ticket')),
-                                    'sale_order_line_id': line_dict.get('line_id'),
-                                })
 
         if not sale:
             return request.redirect("/event/%s" % event_id)
