@@ -1,161 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
-        <template id="assets_backend" name="module_name assets" inherit_id="web.assets_backend">
-            <xpath expr="//link[last()]" position="after">
-                <style>
-                    .partner_course .oe_tag { background-color: #8FFF82; }
-                </style>
-            </xpath>
-        </template>
-        <record id="view_event_registration_form_inherit" model="ir.ui.view">
-            <field name="name">event.registration.form.inherit</field>
-            <field name="model">event.registration</field>
-            <field name="inherit_id" ref="event.view_event_registration_form" />
+  <data>
+    <record id="event_invoice" model="ir.ui.view">
+      <field name="name">Create Invoice</field>
+      <field name="model">event.invoice</field>
+      <field name="arch" type="xml">
+        <form string="Create invoice">
+          <group>
+            <field name="journal_id" domain="[('type','=','sale')]" />
+            <field name="invoice_date" />
+          </group>
+          <footer>
+            <button name="create_invoice" string="Create" type="object" class="oe_highlight" />
+            or
+            <button string="Cancel" class="oe_link" special="cancel" />
+          </footer>
+        </form>
+      </field>
+    </record>
+    <act_window name="Create Draft Invoices" res_model="event.invoice" src_model="event.event" key2="client_action_multi" multi="True" view_mode="form" view_type="form" target="new" id="action_event_invoice" />
+    <record model="ir.ui.view" id="view_event_form_inherit">
+      <field name="name">Events</field>
+      <field name="model">event.event</field>
+      <field name="inherit_id" ref="event.view_event_form" />
+      <field name="arch" type="xml">
+        <button string="Cancel Event" position="before">
+          <button string="Invoice" name="create_invoice" states="confirm,done" type="object" groups="base.group_user" />
+        </button>
+      </field>
+    </record>
+            <record id="view_account_invoice_filter" model="ir.ui.view">
+            <field name="name">account.invoice.select_with_origin</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter" />
             <field name="arch" type="xml">
-                <sheet string="Registration" position="inside">
-                    <label for="participant_ids" attrs="{'invisible': [('partner_id', '=', False)]}" string="Participants" />
-                    <field name="participant_ids" attrs="{'invisible': [('partner_id', '=', False)]}" domain="[('parent_id', '=', partner_id)]" widget="many2many_tags" context="{'default_parent_id': partner_id}"/>
-                </sheet>
+                  <field name="period_id" position="after">
+                    <field name="origin" string="Origin"/>
+                      
+                 </field>
             </field>
         </record>
-        <!-- event_participant -->
-        <record id="view_event_participant_form" model="ir.ui.view">
-            <field name="name">event.participant.form</field>
-            <field name="model">event.participant</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <sheet string="Participant">
-                    <label for="partner_id" string="Participant" />
-                    <field name="partner_id" />
-                    <label for="event_id" string="Event" />
-                    <field name="event_id" />
-                    <label for="note" />
-                    <field name="note" />
-                </sheet>
-            </field>
-        </record>
-        <record id="view_event_participant_tree" model="ir.ui.view">
-            <field name="name">event.participant.tree</field>
-            <field name="model">event.participant</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="Registration">
-                    <field name="event_id" />
-                    <field name="partner_id" />
-                    <field name="state"/>
-                    <button name="registration_open" string="Confirm Registration" states="draft" type="object" icon="gtk-apply"/>
-                    <button name="button_reg_close" string="Attended the Event" states="open" type="object" icon="gtk-jump-to"/>
-                    <button name="button_reg_cancel" string="Cancel Registration" states="draft,open" type="object" icon="gtk-cancel"/>
-                    <button name="do_draft" string="Set To Unconfirmed" states="cancel,done" type="object" icon="gtk-undo"/>
-                </tree>
-            </field>
-        </record>
-        <!-- Search view of event participant -->
-        <record model="ir.ui.view" id="view_participant_search">
-            <field name="name">Participants</field>
-            <field name="model">event.participant</field>
-            <field name="arch" type="xml">
-                <search string="Event Participant">
-                    <field name="event_id"/>
-                    <field name="partner_id"/>
-                </search>
-            </field>
-        </record>
-        <!-- participant action window menu -->
-        <record id="action_participant_list" model="ir.actions.act_window">
-            <field name="res_model">event.participant</field>
-            <field name="view_type">form</field>
-            <field name="name">Participants</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{}</field>
-        </record>
-        <menuitem name="Participants" id="menu_action_participant" parent="event.event_main_menu" action="action_participant_list" groups="event.group_event_manager,event.group_event_user" />
-        <!-- Partner -->
-                <record id="action_participant_partner_button" model="ir.actions.act_window">
-            <field name="res_model">event.participant</field>
-            <field name="view_type">form</field>
-            <field name="name">Participants</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{'search_default_partner_id': active_id, 'default_partner_id': active_id}</field>
-        </record>
-        <record id="view_partner_form" model="ir.ui.view">
-            <field name="name">res.partner.form.inherit.event_types</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form" />
-            <field name="arch" type="xml">
-                <field name="website" position="after">
-                    <field name="event_type_ids" widget="many2many_tags" groups="event.group_event_user"/>
-<!--
-                    <field name="my_context"/>
--->
-                </field>
-                <field name="has_image" position="after">
-                    <field name="event_type_ids" invisible="1"/>
-                </field>
-                <div class="oe_right oe_button_box" position="inside">
-                    <button name="%(event_participant.action_participant_partner_button)d"
-                        type="action"
-                        class="oe_stat_button oe_inline"
-                        icon="fa-user"
-                        help="Participants who went to this event" groups="event.group_event_user">
-                        <field name="count_participants" widget="statinfo" string="Participation" groups="event.group_event_user"/>
-                    </button>
-                </div>
-                <i position="before">
-                    <div class="oe_kanban_footer_left">
-                        <field name="event_type_ids" class="partner_course"/>
-                    </div>
-                </i>
-            </field>
-        </record>
-        <record id="base.action_partner_form" model="ir.actions.act_window">
-            <field name="name">Customers</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">res.partner</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">kanban,tree,form</field>
-            <field name="context">{"search_default_customer":1,"view_event_type_ids":1}</field>
-            <field name="search_view_id" ref="base.view_res_partner_filter"/>
-            <field name="help" type="html">
-              <p class="oe_view_nocontent_create">
-                Click to add a contact in your address book.
-              </p><p>
-                Odoo helps you easily track all activities related to
-                a customer; discussions, history of business opportunities,
-                documents, etc.
-              </p>
-            </field>
-        </record>
-        <!-- participant action window -->
-        <record id="action_participant_list_button" model="ir.actions.act_window">
-            <field name="res_model">event.participant</field>
-            <field name="view_type">form</field>
-            <field name="name">Participants</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id}</field>
-        </record>
-        <record model="ir.ui.view" id="view_event_form_inherit">
-            <field name="name">Events</field>
-            <field name="model">event.event</field>
-            <field name="inherit_id" ref="event.view_event_form"/>
-            <field name="arch" type="xml">
-                <div class="oe_right oe_button_box" position="inside">
-                    <button name="%(event_participant.action_participant_list_button)d"
-                        type="action"
-                        class="oe_stat_button oe_inline"
-                        icon="fa-user"
-                        help="Participants who go this event">
-                        <field name="count_participants" widget="statinfo" string="Participants"/>
-                    </button>
-                </div>
-                <button name="button_reg_cancel" position="after">
-                    <button string="Set To Unconfirmed" name="do_draft" states="cancel,done" type="object" icon="gtk-undo"/>
-                </button>
-                <field name="seats_used" position="after">
-                <field name="course_leader"/>
-                </field>
-            </field>
-        </record>
-    </data>
+    
+  </data>
 </openerp>
