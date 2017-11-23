@@ -98,9 +98,16 @@ class website_event_participant(website_event):
         select = ''
         options = ''
         comment = ''
-        if len(request.env.user.partner_id.commercial_partner_id.child_ids) > 0:
-            for partner in request.env.user.partner_id.commercial_partner_id.child_ids:
-                options += '<option value="%s"><p>%s</p></option>' %(partner.id, partner.name)
+        multi = True
+        partner = request.env.user.partner_id.commercial_partner_id
+        if partner != request.env.ref('base.public_partner'):
+            if partner.is_company:
+                if len(partner.child_ids) > 0:
+                    for p in partner.child_ids:
+                        options += '<option value="%s"><p>%s</p></option>' %(p.id, p.name)
+            else:
+                options += '<option value="%s" selected="1"><p>%s</p></option>' %(partner.id, partner.name)
+                multi = False
         for i in range(0, int(tickets)):
             rows.append({
                 'select': 'sel_%s-%s' %(ticket, str(i)),
@@ -110,6 +117,8 @@ class website_event_participant(website_event):
                 'comment': 'com_%s-%s' %(ticket, str(i)),
             })
         return {
-            'has_children': True if len(request.env.user.partner_id.commercial_partner_id.child_ids) > 0 else False,
+            'selection': True if partner != request.env.ref('base.public_partner') else False,
+            'input': True if partner == request.env.ref('base.public_partner') else False,
+            'multi': multi,
             'rows': rows,
         }
