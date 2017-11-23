@@ -36,6 +36,10 @@ class event_event(models.Model):
     @api.multi
     def create_invoice(self):
         self.ensure_one()
+        raise Warning(self.env['res.users'].read(self.env.uid))
+        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
+        raise Warning(access_group_ids)
+        
         res = self.env['ir.actions.act_window'].for_xml_id('event_invoice_release', 'action_event_invoice')
         res['context'] = {
             'default_event_id': self.id,
