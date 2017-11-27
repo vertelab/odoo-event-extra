@@ -63,7 +63,7 @@ class website_event_participant(website_event):
                         if key.split('-')[0] == 'sel_ticket' and post.get(key) != '' and int(key.split('-')[1]) == ticket_id:
                             # if there's a partner has been chosen, then create a participant of this partner
                             request.env['sale.order.line.participant'].create({
-                                'name': self.env['res.partner'].browse(int(post.get(key))).name,
+                                'name': request.env['res.partner'].browse(int(post.get(key))).name,
                                 'partner_id': int(post.get(key)),
                                 'comment': post.get(key.replace('sel_ticket', 'com_ticket')),
                                 'sale_order_line_id': line_dict.get('line_id'),
