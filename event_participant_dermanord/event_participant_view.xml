@@ -29,8 +29,41 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_event_type_form">
+            <field name="name">event.type.inherited.event_participant_dermanord</field>
+            <field name="model">event.type</field>
+            <field name="inherit_id" ref="event.view_event_type_form"/>
+            <field name="arch" type="xml">
+                <form position="inside">
+                    <field name="website_published" class="pull-right" widget="website_button"/>
+                </form>
+                <field name="default_email_registration" position="after">
+                    <field name="website_competence"/>
+                </field>
+            </field>
+        </record>
 
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form.inherited.event_participant_dermanord</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="category_id" position="after">
+                    <field t-if="is_company" name="child_competence_ids" />
+                </field>
+            </field>
+        </record>
 
+        <record id="view_res_partner_filter" model="ir.ui.view">
+            <field name="name">res.partner.select.inherited.event_participant_dermanord</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter" />
+            <field name="arch" type="xml">
+                <field name="category_id" position="after">
+                    <field name="child_competence_ids" string="Compatence Tags" filter_domain="[('child_competence_ids', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
 
     </data>
 </openerp>

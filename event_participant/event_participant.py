@@ -150,4 +150,3 @@ class event_event(models.Model):
         self.participant_ids = [(6,0,participants)]
     participant_ids = fields.One2many(comodel_name='event.participant', compute='_participants_ids', string='Participants')
     course_leader = fields.Many2one(comodel_name="res.partner",string="Course Leader",help="Course Leader or Main Speaker")
-
