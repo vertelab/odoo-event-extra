@@ -64,10 +64,13 @@ class event_participant(models.Model):
 class event_registration(models.Model):
     _inherit = 'event.registration'
 
+    order_line_id = fields.Many2one(comodel_name="sale.order.line")
+
     @api.one
     @api.onchange('participant_ids')
     def _nb_register(self):
         self.nb_register = len(self.participant_ids) or 1
+        self.order_line_id.product_uom_qty = self.nb_register
 
     #~ participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
     _participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='registration_id', string='Participants')
@@ -81,9 +84,12 @@ class event_registration(models.Model):
     # remove all partners and create a new list of participants
     @api.one
     def _set_participant_ids(self):
+        notes = {p.partner_id.id: {'note': p.note,'state': p.state} for p in self._participant_ids} # Preserve notes
         self._participant_ids.unlink()
         for p in self.participant_ids:
-            self.env['event.participant'].create({'registration_id': self.id, 'partner_id': p.id})
+            self.env['event.participant'].create({'registration_id': self.id, 'partner_id': p.id, 'note': notes.get(p.id,{'note':''})['note'],'state': notes.get(p.id,{'state':'draft'})['state']})
+            
+    
 
     @api.one
     def do_draft(self):
@@ -150,3 +156,18 @@ class event_event(models.Model):
         self.participant_ids = [(6,0,participants)]
     participant_ids = fields.One2many(comodel_name='event.participant', compute='_participants_ids', string='Participants')
     course_leader = fields.Many2one(comodel_name="res.partner",string="Course Leader",help="Course Leader or Main Speaker")
+
+class sale_order_line(models.Model):
+    _inherit = 'sale.order.line'
+
+    event_registration_id = fields.Many2one(comodel_name='event.registration')
+
+    @api.multi
+    def button_confirm(self, cr, uid, ids, context=None):
+        for order_line in self:
+            super(sale_order_line, order_line).button_confirm()
+            if order_line.event_id and order_line.state != 'cancel':
+                registration = self.env['event.registration'].search([('event_id','=', order_line.event_id.id),('event_ticket_id','=',order_line.event_ticket_id and order_line.event_ticket_id.id or None),('origin','=',order_line.order_id.name)])
+                if registration:
+                    order_line.event_registration_id = registration_id
+                    registration.order_line_id = order_line_id.id
