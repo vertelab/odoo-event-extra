@@ -70,7 +70,7 @@ class event_registration(models.Model):
     @api.onchange('participant_ids')
     def _nb_register(self):
         self.nb_register = len(self.participant_ids) or 1
-        self.order_line_id.product_uom_qty = self.nb_register
+        #~ self.order_line_id.product_uom_qty = self.nb_register
 
     #~ participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
     _participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='registration_id', string='Participants')
@@ -81,15 +81,20 @@ class event_registration(models.Model):
     def _get_participant_ids(self):
         self.participant_ids = [(6, 0, [p.partner_id.id for p in self._participant_ids])]
 
-    # remove all partners and create a new list of participants
     @api.one
     def _set_participant_ids(self):
-        notes = {p.partner_id.id: {'note': p.note,'state': p.state} for p in self._participant_ids} # Preserve notes
-        self._participant_ids.unlink()
-        for p in self.participant_ids:
-            self.env['event.participant'].create({'registration_id': self.id, 'partner_id': p.id, 'note': notes.get(p.id,{'note':''})['note'],'state': notes.get(p.id,{'state':'draft'})['state']})
-            
-    
+        # Delete all event.particiant who's partners are no longer in participant_ids
+        participants = self.participant_ids
+        for participant in self._participant_ids:
+            if participant.partner_id not in participants:
+                participant.unlink()
+        # Add new event.particiants for new partners in participant_ids
+        for p in participants:
+            if p not in self._participant_ids.mapped('partner_id'):
+                self.env['event.participant'].create({
+                    'registration_id': self.id,
+                    'partner_id': p.id,
+                })
 
     @api.one
     def do_draft(self):
@@ -137,6 +142,7 @@ class res_partner(models.Model):
 
 class event_event(models.Model):
     _inherit = 'event.event'
+
     @api.one
     def _count_participants(self):
         #~ participants = self.env['event.participant'].search([]).filtered(lambda p: p.registration_id.event_id == self.id)

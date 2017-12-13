@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from openerp import models, fields, api, _
+from openerp.exceptions import Warning
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -36,10 +37,6 @@ class event_event(models.Model):
     @api.multi
     def create_invoice(self):
         self.ensure_one()
-        raise Warning(self.env['res.users'].read(self.env.uid))
-        access_group_ids = self.env['res.partner'].sudo().read(self.env['res.users'].sudo().read(self.env.uid)['commercial_partner_id'])['access_groups_ids']
-        raise Warning(access_group_ids)
-        
         res = self.env['ir.actions.act_window'].for_xml_id('event_invoice_release', 'action_event_invoice')
         res['context'] = {
             'default_event_id': self.id,
@@ -66,14 +63,11 @@ class event_invoice(models.TransientModel):
         self.ensure_one()
         to_invoice = {}
         order_info = {}
-        event = self.env['event.event'].browse(self._context['active_ids'][0])
-        event.invoice = True
-        for line in self.env['sale.order.line'].search([('event_id','=',event.id),('invoiced','=',False)]):
-        #~ for line in self.env['sale.order.line'].search([('event_id','=',event.id),('invoiced','=',False)]).filtered(lambda l: l.event_registration_id.state in ['open','done']):
-            if line.event_registration_id.state == 'cancel':
+        self.event_id.invoice = True
+        for line in self.env['sale.order.line'].search([('event_id', '=', self.event_id.id), ('invoiced', '=', False)]):
+            if line.event_registration_id.state not in ('open', 'done'):
                 line.state = 'exception'
-                break
-            if to_invoice.get(line.order_id.partner_id.id):
+            elif to_invoice.get(line.order_id.partner_id.id):
                 to_invoice[line.order_id.partner_id.id].append(line)
             else:
                 to_invoice[line.order_id.partner_id.id] = [line]
@@ -101,7 +95,7 @@ class event_invoice(models.TransientModel):
                     'account_id': line.product_id.property_account_income.id or line.product_id.categ_id.property_account_income_categ.id,
                     'product_id': line.product_id.id,
                     'uos_id': line.product_uos,
-                    'quantity': line.product_uos_qty,
+                    'quantity': line.event_registration_id.nb_register,
                     'price_unit': line.price_unit,
                     'invoice_line_tax_id': line.tax_id,
                     'discount': line.discount,
@@ -123,7 +117,6 @@ class sale_order_line(models.Model):
 
     @api.model
     def _prepare_order_line_invoice_line(self, line, account_id=False):  # Prevent non released event-lines to be invoiced
-        #~ _logger.error('prepare order line invoice %s' % line.product_id.name)
         if line.event_id and line.event_id.invoice == False:
             return None
         if line.event_registration_id and line.event_registration_id.state == 'cancel':
@@ -134,8 +127,10 @@ class sale_order_line(models.Model):
     def button_confirm(self):
         res = super(sale_order_line, self).button_confirm()
         for order_line in self: # connect registration to order line
-            registration = self.env['event.registration'].search([('event_ticket_id', '=', order_line.event_ticket_id.id), ('partner_id', '=', order_line.order_id.partner_id.id),('line_id', '=', None)], order='create_date desc',limit=1)
-            if registration:
+            if order_line.event_id:
+                registration = self.env['event.registration'].search([('event_ticket_id', '=', order_line.event_ticket_id.id), ('partner_id', '=', order_line.order_id.partner_id.id),('line_id', '=', None)], order='create_date desc',limit=1)
+                if not registration:
+                    raise Warning(_("Couldn't find %s's registration to the %s event!" % (order_line.order_id.partner_id.name, order_line.event_id.name)))
                 registration.line_id = order_line.id
                 order_line.event_registration_id = registration.id
         return res
