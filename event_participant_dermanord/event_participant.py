@@ -62,11 +62,21 @@ class event(models.Model):
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
-    @api.one
+    
+    
+    @api.multi
     def button_confirm(self):
         res = super(sale_order_line, self).button_confirm()
-        self.env['event.registration'].search([('origin', '=', self.order_id.name)]).write({'order_id': self.order_id.id})
+        for line in self:
+            self.env['event.registration'].search([('origin', '=', line.order_id.name)]).write({'order_id': line.order_id.id})
         return res
+    
+    #~ @api.v7
+    #~ def button_confirm(self, cr, uid, ids, context=None):
+        #~ res = super(sale_order_line, self).button_confirm(cr, uid, ids, context=context)
+        #~ env = Environment(cr, uid, context)
+        #~ env['event.registration'].search([('origin', '=', self.order_id.name)]).write({'order_id': self.order_id.id})
+        #~ return res
 
 
 class website_event(website_event):

@@ -169,7 +169,7 @@ class sale_order_line(models.Model):
     event_registration_id = fields.Many2one(comodel_name='event.registration')
 
     @api.multi
-    def button_confirm(self, cr, uid, ids, context=None):
+    def button_confirm(self):
         for order_line in self:
             super(sale_order_line, order_line).button_confirm()
             if order_line.event_id and order_line.state != 'cancel':
@@ -177,3 +177,8 @@ class sale_order_line(models.Model):
                 if registration:
                     order_line.event_registration_id = registration_id
                     registration.order_line_id = order_line_id.id
+
+    #~ @api.v7
+    #~ def button_confirm(self, cr, uid, ids, context=None):
+        #~ res = super(sale_order_line, self).button_confirm(cr, uid, ids, context=context)
+        #~ env = Environment(cr, uid, context)

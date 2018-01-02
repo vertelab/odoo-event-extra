@@ -134,3 +134,16 @@ class sale_order_line(models.Model):
                 registration.line_id = order_line.id
                 order_line.event_registration_id = registration.id
         return res
+    
+    #~ @api.v7
+    #~ def button_confirm(self, cr, uid, ids, context=None):
+        #~ res = super(sale_order_line, self).button_confirm(cr, uid, ids, context=context)
+        #~ env = Environment(cr, uid, context)
+        #~ for order_line in env['sale.order.line'].browse(ids): # connect registration to order line
+            #~ if order_line.event_id:
+                #~ registration = env['event.registration'].search([('event_ticket_id', '=', order_line.event_ticket_id.id), ('partner_id', '=', order_line.order_id.partner_id.id),('line_id', '=', None)], order='create_date desc',limit=1)
+                #~ if not registration:
+                    #~ raise Warning(_("Couldn't find %s's registration to the %s event!" % (order_line.order_id.partner_id.name, order_line.event_id.name)))
+                #~ registration.line_id = order_line.id
+                #~ order_line.event_registration_id = registration.id
+        #~ return res
