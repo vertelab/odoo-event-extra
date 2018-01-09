@@ -173,10 +173,10 @@ class sale_order_line(models.Model):
         for order_line in self:
             super(sale_order_line, order_line).button_confirm()
             if order_line.event_id and order_line.state != 'cancel':
-                registration = self.env['event.registration'].search([('event_id','=', order_line.event_id.id),('event_ticket_id','=',order_line.event_ticket_id and order_line.event_ticket_id.id or None),('origin','=',order_line.order_id.name)])
+                registration = self.env['event.registration'].search([('event_id','=', order_line.event_id.id),('event_ticket_id','=',order_line.event_ticket_id and order_line.event_ticket_id.id or None),('$
                 if registration:
-                    order_line.event_registration_id = registration_id
-                    registration.order_line_id = order_line_id.id
+                    order_line.event_registration_id = registration
+                    registration.order_line_id = order_line
 
     #~ @api.v7
     #~ def button_confirm(self, cr, uid, ids, context=None):
