@@ -210,7 +210,7 @@ class website_event(website_event):
 class event_type(models.Model):
     _inherit = 'event.type'
 
-    website_competence = fields.Char(string='Website Competence', help='This competence name shows in website')
+    category_id = fields.Many2one(comodel_name='res.partner.category', string='Website Competence', help='This competence name shows in website')
     website_published = fields.Boolean(string='Website Publish')
 
 
@@ -218,16 +218,18 @@ class res_partner(models.Model):
     _inherit = 'res.partner'
 
     @api.one
-    @api.depends('child_competence_ids', 'child_ids', 'child_ids.category_id')
+    @api.depends('child_competence_ids', 'child_ids', 'child_ids.category_id', 'event_type_ids')
     def _get_child_competence_ids(self):
         if self.is_company:
             event_type_ids = self.env['event.type'].browse([])
-            categories = self.env['res.partner.category'].browse([])
+            category_ids = self.env['res.partner.category'].browse([])
             for c in self.child_ids:
                 for ev in c.event_type_ids:
                     if ev.website_published:
                         event_type_ids |= ev
                 for categ in c.category_id:
-                    categories |= categ
-            self.child_competence_ids = ','.join(sorted(event_type_ids.mapped('website_competence') + categories.mapped('name')))
-    child_competence_ids = fields.Char(compute='_get_child_competence_ids', string='Child Competences')
+                    category_ids |= categ
+            self.child_competence_ids |= category_ids
+            self.child_competence_ids |= event_type_ids.mapped('category_id')
+            self.event_type_ids |= event_type_ids
+    child_competence_ids = fields.Many2many(comodel_name='res.partner.category', compute='_get_child_competence_ids', string='Child Competences')
