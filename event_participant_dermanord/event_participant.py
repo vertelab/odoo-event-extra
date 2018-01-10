@@ -62,15 +62,15 @@ class event(models.Model):
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
-    
-    
+
+
     @api.multi
     def button_confirm(self):
         res = super(sale_order_line, self).button_confirm()
         for line in self:
             self.env['event.registration'].search([('origin', '=', line.order_id.name)]).write({'order_id': line.order_id.id})
         return res
-    
+
     #~ @api.v7
     #~ def button_confirm(self, cr, uid, ids, context=None):
         #~ res = super(sale_order_line, self).button_confirm(cr, uid, ids, context=context)
@@ -228,7 +228,7 @@ class res_partner(models.Model):
     _inherit = 'res.partner'
 
     @api.one
-    @api.depends('child_competence_ids', 'child_ids', 'child_ids.category_id', 'event_type_ids')
+    @api.depends('child_ids', 'child_ids.category_id', 'child_ids.event_type_ids')
     def _get_child_competence_ids(self):
         if self.is_company:
             event_type_ids = self.env['event.type'].browse([])
@@ -242,4 +242,7 @@ class res_partner(models.Model):
             self.child_competence_ids |= category_ids
             self.child_competence_ids |= event_type_ids.mapped('category_id')
             self.event_type_ids |= event_type_ids
-    child_competence_ids = fields.Many2many(comodel_name='res.partner.category', compute='_get_child_competence_ids', string='Child Competences')
+    child_competence_ids = fields.Many2many(comodel_name='res.partner.category', compute='_get_child_competence_ids', string='Child Competences', search='_search_child_competence_ids')
+    def _search_child_competence_ids(self, operator, value):
+        registrations = self.env['event.registration'].search_read([('event_id.type.category_id', operator, value), ('event_id.state', '=', 'done'), ('state', '=', 'done')], ['id'])
+        return ['|', ('child_ids.category_id', operator, value), ('child_ids.participant_ids.registration_id', 'in', [r['id'] for r in registrations])]
