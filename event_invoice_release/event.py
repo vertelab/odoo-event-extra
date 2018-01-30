@@ -28,7 +28,7 @@ _logger = logging.getLogger(__name__)
 class event_registration(models.Model):
     _inherit = 'event.registration'
     line_id = fields.Many2one(comodel_name='sale.order.line')
-    
+
 class event_event(models.Model):
     _inherit = 'event.event'
 
@@ -57,7 +57,7 @@ class event_invoice(models.TransientModel):
         if len(self.env['sale.order.line'].search([('event_id','=',self.event_id.id),('invoiced','=',False)])) == 0:
             raise Warning(_('None of these registrations require invoicing.'))
         return res
-    
+
     @api.multi
     def create_invoice(self):
         self.ensure_one()
@@ -65,7 +65,7 @@ class event_invoice(models.TransientModel):
         order_info = {}
         self.event_id.invoice = True
         for line in self.env['sale.order.line'].search([('event_id', '=', self.event_id.id), ('invoiced', '=', False)]):
-            if line.event_registration_id.state not in ('open', 'done'):
+            if line.event_registration_id.state in ['cancel']:
                 line.state = 'exception'
             elif to_invoice.get(line.order_id.partner_id.id):
                 to_invoice[line.order_id.partner_id.id].append(line)
@@ -134,7 +134,7 @@ class sale_order_line(models.Model):
                 registration.line_id = order_line.id
                 order_line.event_registration_id = registration.id
         return res
-    
+
     #~ @api.v7
     #~ def button_confirm(self, cr, uid, ids, context=None):
         #~ res = super(sale_order_line, self).button_confirm(cr, uid, ids, context=context)
