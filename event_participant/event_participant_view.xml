@@ -153,7 +153,7 @@
                     <button string="Set To Unconfirmed" name="do_draft" states="cancel,done" type="object" icon="gtk-undo"/>
                 </button>
                 <field name="seats_used" position="after">
-                <field name="course_leader"/>
+                <field name="course_leader" widget="many2many_tags"/>
                 </field>
             </field>
         </record>
