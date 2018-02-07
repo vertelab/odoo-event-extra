@@ -64,7 +64,7 @@ class event_invoice(models.TransientModel):
         to_invoice = {}
         order_info = {}
         self.event_id.invoice = True
-        for line in self.env['sale.order.line'].search([('event_id', '=', self.event_id.id), ('invoiced', '=', False)]):
+        for line in self.env['sale.order.line'].search([('event_id', '=', self.event_id.id), ('invoiced', '=', False), ('order_id.state', '!=', 'draft')]):
             if line.event_registration_id.state in ['cancel']:
                 line.state = 'exception'
             elif to_invoice.get(line.order_id.partner_id.id):
@@ -88,7 +88,7 @@ class event_invoice(models.TransientModel):
                 'journal_id': self.journal_id.id,
             })
             for line in to_invoice[partner_id]:
-                self.env['account.invoice.line'].create({
+                line.invoice_lines |= self.env['account.invoice.line'].create({
                     'invoice_id' : invoice.id,
                     'origin': line.order_id.name,
                     'name': line.name,
@@ -97,12 +97,12 @@ class event_invoice(models.TransientModel):
                     'uos_id': line.product_uos,
                     'quantity': line.event_registration_id.nb_register,
                     'price_unit': line.price_unit,
-                    'invoice_line_tax_id': line.tax_id,
+                    'invoice_line_tax_id': [(4, t.id, 0) for t in line.tax_id],
+                    
                     'discount': line.discount,
                     'account_analytic_id': False,
                 })
                 line.state = 'done'
-                line.invoice_lines = [(4, invoice.id)]
 
             invoice.button_compute(set_total=True)
             invoices.append(invoice)
