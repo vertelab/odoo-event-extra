@@ -31,6 +31,7 @@
 """,
     'images': ['static/description/event_participant.jpg'],
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['event_sale',],
     'data': [ 'event_view.xml',

@@ -28,6 +28,7 @@
         If you want to change the layout of the document, you can do that with
         the template saved on the report record.""",
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['event_participant', 'report_scribus'],
     'data': ['event_participant_report.xml'],

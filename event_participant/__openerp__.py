@@ -30,6 +30,7 @@ Add a participants list in event registration
 """,
     'images': ['static/description/event_participant.jpg'],
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['event', 'report', 'sale'],
     'data': ['event_participant_view.xml',

@@ -28,6 +28,7 @@ Add simple views pages for products
 ===================================
 """,
     'author': 'Vertel AB',
+    'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
     'depends': ['website_event', 'website_imagemagick'],
     'data': ['website_event_image.xml',
