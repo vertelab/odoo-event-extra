@@ -102,8 +102,9 @@ class website_event_participant(website_event):
         partner = request.env.user.partner_id.commercial_partner_id
         if partner != request.env.ref('base.public_partner'):
             if partner.is_company:
-                if len(partner.child_ids) > 0:
-                    for p in partner.child_ids:
+                children = partner.child_ids.filtered(lambda c: c.type not in ['invoice', 'delivery', 'visit'])
+                if len(children) > 0:
+                    for p in children:
                         options += '<option value="%s"><p>%s</p></option>' %(p.id, p.name)
             else:
                 options += '<option value="%s" selected="1"><p>%s</p></option>' %(partner.id, partner.name)
