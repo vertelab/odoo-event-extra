@@ -44,7 +44,7 @@ class website_event_participant(website_event):
     @http.route(['/event/cart/update'], type='http', auth="public", methods=['POST'], website=True)
     def cart_update(self, event_id, **post):
         cr, uid, context = request.cr, request.uid, request.context
-        ticket_obj = request.registry.get('event.event.ticket')
+        ticket_obj = request.env['event.event.ticket']
 
         sale = False
         for key, value in post.items():
@@ -54,29 +54,35 @@ class website_event_participant(website_event):
                 if not quantity:
                     continue
                 sale = True
-                ticket = ticket_obj.browse(cr, SUPERUSER_ID, ticket_id, context=context)
+                ticket = ticket_obj.sudo().browse(ticket_id)
                 order = request.website.sale_get_order(force_create=1)
                 line_dict = order.with_context(event_ticket_id=ticket.id)._cart_update(product_id=ticket.product_id.id, add_qty=quantity)
 
                 if ticket_id and order and line_dict:
                     for key, value in post.items():
+                        partner_id = None
                         if key.split('-')[0] == 'sel_ticket' and post.get(key) != '' and int(key.split('-')[1]) == ticket_id:
-                            # if there's a partner has been chosen, then create a participant of this partner
-                            request.env['sale.order.line.participant'].create({
-                                'name': request.env['res.partner'].browse(int(post.get(key))).name,
-                                'partner_id': int(post.get(key)),
-                                'comment': post.get(key.replace('sel_ticket', 'com_ticket')),
-                                'sale_order_line_id': line_dict.get('line_id'),
-                            })
+                            partner_id = int(post.get(key))
+                            partner_name = request.env['res.partner'].sudo().browse(int(post.get(key))).name
+                            comment = post.get(key.replace('sel_ticket', 'com_ticket'))
                         elif key.split('-')[0] == 'fname_ticket' and post.get(key) != '' and int(key.split('-')[1]) == ticket_id and post.get(key.replace('fname_ticket', 'sel_ticket')) == '':
                             # if first name is not empty and select option is empty, then create a new participant
                             #~ partner = request.env['res.partner'].create({
                                 #~ 'name': post.get(key) + '%s' %((' ' + post.get(key.replace('fname_ticket', 'lname_ticket'))) if post.get(key.replace('fname_ticket', 'lname_ticket')) != '' else ''),
                                 #~ 'parent_id': request.env.user.commercial_partner_id.partner_id.id,
                             #~ })
+                            partner_name = post.get(key) + '%s' %((' ' + post.get(key.replace('fname_ticket', 'lname_ticket'))) if post.get(key.replace('fname_ticket', 'lname_ticket')) != '' else '')
+                            comment = post.get(key.replace('fname_ticket', 'com_ticket'))
+                            partner_id = request.env['res.partner'].sudo().create({
+                                'name': partner_name,
+                                'parent_id': request.env.user.commercial_partner_id.id,
+                            }).id
+                        if partner_id:
+                            # create a participant of this partner
                             request.env['sale.order.line.participant'].create({
-                                'name': post.get(key) + '%s' %((' ' + post.get(key.replace('fname_ticket', 'lname_ticket'))) if post.get(key.replace('fname_ticket', 'lname_ticket')) != '' else ''),
-                                'comment': post.get(key.replace('fname_ticket', 'com_ticket')),
+                                'name': partner_name,
+                                'partner_id': partner_id,
+                                'comment': comment,
                                 'sale_order_line_id': line_dict.get('line_id'),
                             })
 
