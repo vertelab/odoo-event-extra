@@ -72,20 +72,20 @@ function validate_selection($select){
     var $all_select = $select.closest("tr").siblings();
     var submit = $select.closest("form").find("button");
     var selected = false;
+    submit.attr("disabled", "disabled");
     if ($select.val()) {
+       selected = true;
+    }
+    $.each($all_select, function(i, elem){
+        if (i === 0) return;
+        if (!$(this).find("select").val()) {
+            selected = false;
+        }
+    });
+    if (selected) {
         submit.removeAttr("disabled");
     }
     else {
         submit.attr("disabled", "disabled");
-        $.each($all_select, function(i, elem){
-            if (i === 0) return;
-            if ($(this).find("select").val()) {
-                submit.removeAttr("disabled");
-                return false;
-            }
-            else {
-                submit.attr("disabled", "disabled");
-            }
-        });
     }
 }
