@@ -43,7 +43,6 @@ class sale_order_line(models.Model):
 
     participant_ids = fields.One2many(comodel_name='sale.order.line.participant', inverse_name='sale_order_line_id', string='Participants')
 
-    
     @api.multi
     def button_confirm(self):
         res = super(sale_order_line, self).button_confirm()
@@ -86,4 +85,4 @@ class sale_order_line(models.Model):
                     #~ 'state': 'draft',
                 #~ })
         #~ return res
-       
+

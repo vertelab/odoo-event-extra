@@ -68,24 +68,68 @@ $(".sel").live('click', function() {
     $(this).closest("td").find("select").removeClass("hidden");
 });
 
-function validate_selection($select){
-    var $all_select = $select.closest("tr").siblings();
-    var submit = $select.closest("form").find("button");
-    var selected = false;
+function validate_selection_input($element){
+    var $all_element = $element.closest("tr").siblings();
+    var submit = $element.closest("form").find("button");
     submit.attr("disabled", "disabled");
-    if ($select.val()) {
-       selected = true;
+    var selected = false;
+    var inupted = false;
+    var has_select = false;
+    var has_input = false;
+    // select
+    if ($element.is("select")) {
+        if ($element.val()) {
+           selected = true;
+           has_select = true;
+        }
     }
-    $.each($all_select, function(i, elem){
+    // input
+    else if ($element.is("input")) {
+        if ($element.val()) {
+           inupted = true;
+           has_input = true;
+        }
+    }
+    $.each($all_element, function(i, elem){
         if (i === 0) return;
-        if (!$(this).find("select").val()) {
+        var $select = $(this).closest("tr").find("select");
+        var $input = $(this).closest("tr").find("input.fname");
+        if ($select) {
+            has_select = true;
+        }
+        if ($input ) {
+            has_input = true;
+        }
+        // in select
+        if (!$select.hasClass("hidden") && $input.closest("div.input-group").hasClass("hidden") && !$select.val()) {
             selected = false;
         }
+        // in input
+        else if ($select.hasClass("hidden") && !$input.closest("div.input-group").hasClass("hidden") && !$input.val()) {
+            inupted = false;
+        }
     });
-    if (selected) {
+    if (has_select && selected) {
+        submit.removeAttr("disabled");
+    }
+    else if (has_input && inupted) {
         submit.removeAttr("disabled");
     }
     else {
         submit.attr("disabled", "disabled");
     }
 }
+
+function validate_selection($selection) {
+    validate_selection_input($selection);
+}
+
+function validate_input($input) {
+    validate_selection_input($input);
+}
+
+$("input.fname").live("input", function() {
+    if ($(this).val()) {
+        validate_input($(this));
+    }
+});
