@@ -120,16 +120,23 @@ function validate_selection_input($element){
     }
 }
 
+function restore_submit($sel) {
+    $sel.closest("form").find("button").attr("disabled", "disabled");
+}
+
 function validate_selection($selection) {
     validate_selection_input($selection);
 }
 
 function validate_input($input) {
-    validate_selection_input($input);
+    validate_selection_input($input.closest("td").find("input.fname"));
 }
 
 $("input.fname").live("input", function() {
     if ($(this).val()) {
         validate_input($(this));
+    }
+    else {
+        $(this).closest("form").find("button").attr("disabled", "disabled");
     }
 });
