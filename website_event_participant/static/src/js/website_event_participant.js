@@ -49,7 +49,7 @@ $(document).ready(function(){
             });
             self.closest("tr").after(row);
         });
-
+        $(this).closest("form").find("button").attr("disabled", "disabled");
     });
 });
 
@@ -67,3 +67,25 @@ $(".sel").live('click', function() {
     $(this).closest("tr").find("div.input-group").addClass("hidden");
     $(this).closest("td").find("select").removeClass("hidden");
 });
+
+function validate_selection($select){
+    var $all_select = $select.closest("tr").siblings();
+    var submit = $select.closest("form").find("button");
+    var selected = false;
+    if ($select.val()) {
+        submit.removeAttr("disabled");
+    }
+    else {
+        submit.attr("disabled", "disabled");
+        $.each($all_select, function(i, elem){
+            if (i === 0) return;
+            if ($(this).find("select").val()) {
+                submit.removeAttr("disabled");
+                return false;
+            }
+            else {
+                submit.attr("disabled", "disabled");
+            }
+        });
+    }
+}

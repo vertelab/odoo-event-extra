@@ -20,30 +20,10 @@
         </record>
 
         <template id="event_description_full" inherit_id="website_event_sale.event_description_full" name="Event's Ticket form">
-<!--
-            <xpath expr="//tr[@itemtype='http://data-vocabulary.org/Offer']" position="after">
-                <span>Hello world</span>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
-                     partner_id = fields.Many2one(comodel_name='res.partner', string='Participant')
-                     parent_id = fields.Many2one(comodel_name='res.partner', related='partner_id.parent_id', string='partner')
-                     state = fields.Selection([
-                     ('draft', 'Unconfirmed'),
-                     ('cancel', 'Cancelled'),
-                     ('open', 'Confirmed'),
-                     ('done', 'Attended'),
-                     ], string='Status', default='draft', readonly=True, copy=False)
-                     event_id = fields.Many2one(comodel_name='event.event', related='registration_id.event_id', string='Events')
-                     registration_id = fields.Many2one(comodel_name='event.registration', string='Registration')
-                     note = fields.Text(string='Note',help="Good to know information, eg food allergy")
-            </xpath>
             <xpath expr="//select[@t-if='ticket.seats_available or not ticket.seats_max']" position="attributes">
-                <attribute name="onclick">Hello world</attribute>
+                <!-- disable order button till at least one selection has value, controlled by js -->
+                <attribute name="disabled">disabled</attribute>
             </xpath>
--->
         </template>
 
         <template id="website_event_participant_assets_frontend" inherit_id="website.assets_frontend" name="Event Participants">
