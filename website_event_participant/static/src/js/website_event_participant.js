@@ -51,21 +51,21 @@ $(document).ready(function(){
         });
         $(this).closest("form").find("button").attr("disabled", "disabled");
     });
-});
 
-$(".add").on('click touchend', function() {
-    $(this).addClass("hidden");
-    $(this).closest("tr").find(".sel").removeClass("hidden");
-    $(this).closest("tr").find("select").attr("value", "");
-    $(this).closest("tr").find("select").addClass("hidden");
-    $(this).closest("td").find("div").removeClass("hidden");
-});
+    $(".add.fa.fa-plus-circle.fa-2x.text-success").click(function() {
+        $(this).addClass("hidden");
+        $(this).closest("tr").find(".sel").removeClass("hidden");
+        $(this).closest("tr").find("select").attr("value", "");
+        $(this).closest("tr").find("select").addClass("hidden");
+        $(this).closest("td").find("div").removeClass("hidden");
+    });
 
-$(".sel").on('click touchend', function() {
-    $(this).addClass("hidden");
-    $(this).closest("tr").find(".add").removeClass("hidden");
-    $(this).closest("tr").find("div.input-group").addClass("hidden");
-    $(this).closest("td").find("select").removeClass("hidden");
+    $(".sel.fa.fa-caret-down.fa-2x.text-primary").click(function() {
+        $(this).addClass("hidden");
+        $(this).closest("tr").find(".add").removeClass("hidden");
+        $(this).closest("tr").find("div.input-group").addClass("hidden");
+        $(this).closest("td").find("select").removeClass("hidden");
+    });
 });
 
 function validate_selection_input($element){
