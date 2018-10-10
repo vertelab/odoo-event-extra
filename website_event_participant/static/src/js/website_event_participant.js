@@ -53,7 +53,7 @@ $(document).ready(function(){
     });
 });
 
-$(".add").live('click', function() {
+$(".add").on('click touchend', function() {
     $(this).addClass("hidden");
     $(this).closest("tr").find(".sel").removeClass("hidden");
     $(this).closest("tr").find("select").attr("value", "");
@@ -61,7 +61,7 @@ $(".add").live('click', function() {
     $(this).closest("td").find("div").removeClass("hidden");
 });
 
-$(".sel").live('click', function() {
+$(".sel").on('click touchend', function() {
     $(this).addClass("hidden");
     $(this).closest("tr").find(".add").removeClass("hidden");
     $(this).closest("tr").find("div.input-group").addClass("hidden");
