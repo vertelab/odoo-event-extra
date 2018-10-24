@@ -67,11 +67,12 @@ class event_invoice(models.TransientModel):
         for line in self.env['sale.order.line'].search([('event_id', '=', self.event_id.id), ('invoiced', '=', False), ('order_id.state', '!=', 'draft')]):
             if line.event_registration_id.state in ['cancel']:
                 line.state = 'exception'
-            elif to_invoice.get(line.order_id.partner_id.id):
-                to_invoice[line.order_id.partner_id.id].append(line)
-            else:
-                to_invoice[line.order_id.partner_id.id] = [line]
-                order_info[line.order_id.partner_id.id] = line.order_id
+            elif line.event_registration_id.state in ['open', 'done']:
+                if to_invoice.get(line.order_id.partner_id.id):
+                    to_invoice[line.order_id.partner_id.id].append(line)
+                else:
+                    to_invoice[line.order_id.partner_id.id] = [line]
+                    order_info[line.order_id.partner_id.id] = line.order_id
         invoices = []
         for partner_id in to_invoice.keys():
             invoice = self.env['account.invoice'].create({ # TODO merge to an open invoice
@@ -87,6 +88,7 @@ class event_invoice(models.TransientModel):
                 'currency_id': order_info[partner_id].currency_id.id,
                 'journal_id': self.journal_id.id,
             })
+            # TODO: ta med eventuella expavg
             for line in to_invoice[partner_id]:
                 line.invoice_lines |= self.env['account.invoice.line'].create({
                     'invoice_id' : invoice.id,
@@ -98,12 +100,14 @@ class event_invoice(models.TransientModel):
                     'quantity': line.event_registration_id.nb_register,
                     'price_unit': line.price_unit,
                     'invoice_line_tax_id': [(4, t.id, 0) for t in line.tax_id],
-                    
+
                     'discount': line.discount,
                     'account_analytic_id': False,
                 })
                 line.state = 'done'
-
+                line.order_id.invoice_ids = [(6, 0, [invoice.id])]
+                if len(line.order_id.order_line.filtered(lambda l: l.product_id.type != 'service' and l.event_id == self.event_id and l.state != 'done')) == 0:
+                    line.order_id.state = 'done'
             invoice.button_compute(set_total=True)
             invoices.append(invoice)
         res = self.env['ir.actions.act_window'].for_xml_id('account', 'action_invoice_tree')
