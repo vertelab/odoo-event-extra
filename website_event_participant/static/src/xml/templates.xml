@@ -4,16 +4,16 @@
 <templates id="template" xml:space="preserve">
     <tr t-name="partner_info">
         <td>
-            <i t-att-class="sel" title="Select a contact person" onchange="restore_submit($(this));"/>
-            <select t-att-name="select" t-att-class="selection" title="Select a contact person" onclick="validate_selection($(this));">
+            <i t-att-class="sel" title="Select a contact person" onclick="restore_submit($(this));"/>
+            <select t-att-name="select" t-att-class="selection" title="Select a contact person" onchange="validate_selection($(this));">
                 <t t-if="multi"><option value="">-- Choose A Person --</option></t>
                 <t t-raw="option"/>
             </select>
         </td>
         <td>
-            <i t-att-class="add" title="Create a new contact person" onclick="validate_input($(this));"/>
+            <i t-att-class="add" title="Create a new contact person" onclick="restore_input($(this));"/>
             <div t-att-class="input">
-                <input t-att-name="firstname" class="fname form-control col-md-6" placeholder="First Name"/>
+                <input t-att-name="firstname" class="fname form-control col-md-6" placeholder="First Name" onchange="validate_input($(this));"/>
                 <span class="input-group-addon" style="padding: 0px;"></span>
                 <input t-att-name="lastname" class="lname form-control col-md-6" placeholder="Last Name"/>
             </div>

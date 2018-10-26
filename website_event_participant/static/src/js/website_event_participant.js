@@ -10,13 +10,13 @@ website.add_template_file('/website_event_participant/static/src/xml/templates.x
 $(document).ready(function(){
 
     $("select[name^='ticket-']").on("change", function(){
-        var self = $(this);
-        var parent_tr = self.closest("tr[itemscope=itemscope]");
+        var $self = $(this);
+        var parent_tr = $self.closest("tr[itemscope=itemscope]");
         openerp.jsonRpc("/render/nbr_partners", "call", {
             'ticket': $(this).attr('name'),
             'tickets': $(this).val(),
         }).done(function(data){
-            $(self.closest("tbody")).find(parent_tr).nextAll().each(function() {
+            $($self.closest("tbody")).find(parent_tr).nextAll().each(function() {
                 if($(this).attr("itemscope") == 'itemscope')
                     return false;
                 else
@@ -47,31 +47,17 @@ $(document).ready(function(){
                 });
                 row += content;
             });
-            self.closest("tr").after(row);
+            $self.closest("tr").after(row);
         });
-        $(this).closest("form").find("button").attr("disabled", "disabled");
+        $self.closest("form").find("button").attr("disabled", "disabled");
     });
 
-    $(".add.fa.fa-plus-circle.fa-2x.text-success").click(function() {
-        $(this).addClass("hidden");
-        $(this).closest("tr").find(".sel").removeClass("hidden");
-        $(this).closest("tr").find("select").attr("value", "");
-        $(this).closest("tr").find("select").addClass("hidden");
-        $(this).closest("td").find("div").removeClass("hidden");
-    });
-
-    $(".sel.fa.fa-caret-down.fa-2x.text-primary").click(function() {
-        $(this).addClass("hidden");
-        $(this).closest("tr").find(".add").removeClass("hidden");
-        $(this).closest("tr").find("div.input-group").addClass("hidden");
-        $(this).closest("td").find("select").removeClass("hidden");
-    });
 });
 
 function validate_selection_input($element){
     var $all_element = $element.closest("tr").siblings();
-    var submit = $element.closest("form").find("button");
-    submit.attr("disabled", "disabled");
+    var $submit = $element.closest("form").find("button");
+    $submit.attr("disabled", "disabled");
     var selected = false;
     var inupted = false;
     var has_select = false;
@@ -110,33 +96,47 @@ function validate_selection_input($element){
         }
     });
     if (has_select && selected) {
-        submit.removeAttr("disabled");
+        $submit.removeAttr("disabled");
     }
     else if (has_input && inupted) {
-        submit.removeAttr("disabled");
+        $submit.removeAttr("disabled");
     }
     else {
-        submit.attr("disabled", "disabled");
+        $submit.attr("disabled", "disabled");
+    }
+}
+
+function validate_selection($sel) {
+    $sel.addClass("hidden");
+    $sel.closest("tr").find(".add").removeClass("hidden");
+    $sel.closest("tr").find("div.input-group").addClass("hidden");
+    $sel.closest("td").find("select").removeClass("hidden");
+    validate_selection_input($sel);
+}
+
+function validate_input($input) {
+    if ($input.val()) {
+        validate_selection_input($input.closest("td").find("input.fname"));
+    }
+    else {
+        $input.closest("form").find("button").attr("disabled", "disabled");
     }
 }
 
 function restore_submit($sel) {
     $sel.closest("form").find("button").attr("disabled", "disabled");
+    $sel.addClass("hidden");
+    $sel.closest("tr").find(".add").removeClass("hidden");
+    $sel.closest("tr").find("div.input-group").addClass("hidden");
+    $sel.closest("td").find("select").removeClass("hidden");
+    validate_selection_input($sel);
 }
 
-function validate_selection($selection) {
-    validate_selection_input($selection);
-}
-
-function validate_input($input) {
+function restore_input($input) {
+    $input.addClass("hidden");
+    $input.closest("tr").find(".sel").removeClass("hidden");
+    $input.closest("tr").find("select").attr("value", "");
+    $input.closest("tr").find("select").addClass("hidden");
+    $input.closest("td").find("div").removeClass("hidden");
     validate_selection_input($input.closest("td").find("input.fname"));
 }
-
-$("input.fname").live("input", function() {
-    if ($(this).val()) {
-        validate_input($(this));
-    }
-    else {
-        $(this).closest("form").find("button").attr("disabled", "disabled");
-    }
-});
