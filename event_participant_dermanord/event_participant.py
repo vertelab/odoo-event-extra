@@ -228,7 +228,7 @@ class res_partner(models.Model):
     _inherit = 'res.partner'
 
     @api.one
-    @api.depends('child_ids', 'child_ids.category_id', 'child_ids.event_type_ids')
+    @api.depends('child_ids', 'child_ids.category_id', 'child_ids.event_type_ids', 'partner_ids', 'partner_ids.category_id', 'partner_ids.event_type_ids')
     def _get_child_competence_ids(self):
         if self.is_company:
             event_type_ids = self.env['event.type'].browse([])
@@ -238,6 +238,12 @@ class res_partner(models.Model):
                     if ev.website_published:
                         event_type_ids |= ev
                 for categ in c.category_id:
+                    category_ids |= categ
+            for p in self.partner_ids:
+                for ev in p.event_type_ids:
+                    if ev.website_published:
+                        event_type_ids |= ev
+                for categ in p.category_id:
                     category_ids |= categ
             self.child_competence_ids |= category_ids
             self.child_competence_ids |= event_type_ids.mapped('category_id')
