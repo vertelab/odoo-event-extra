@@ -251,4 +251,4 @@ class res_partner(models.Model):
     child_competence_ids = fields.Many2many(comodel_name='res.partner.category', compute='_get_child_competence_ids', string='Child Competences', search='_search_child_competence_ids')
     def _search_child_competence_ids(self, operator, value):
         registrations = self.env['event.registration'].search_read([('event_id.type.category_id', operator, value), ('event_id.state', '=', 'done'), ('state', '=', 'done')], ['id'])
-        return ['|', ('child_ids.category_id', operator, value), ('child_ids.participant_ids.registration_id', 'in', [r['id'] for r in registrations])]
+        return ['|', '|', '|', ('child_ids.category_id', operator, value), ('child_ids.participant_ids.registration_id', 'in', [r['id'] for r in registrations]), ('partner_ids.category_id', operator, value), ('partner_ids.participant_ids.registration_id', 'in', [r['id'] for r in registrations])]
