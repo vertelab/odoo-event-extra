@@ -27,6 +27,9 @@
         <button string="Cancel Event" position="before">
           <button string="Invoice" name="create_invoice" states="confirm,done" type="object" groups="base.group_user" />
         </button>
+        <field name="company_id" position="after">
+          <field name="invoice"/>
+        </field>
       </field>
     </record>
             <record id="view_account_invoice_filter" model="ir.ui.view">
