@@ -26,6 +26,12 @@
                     <field name="security_type"/>
                     <field name="group_ids" widget="many2many_tags" attrs="{'invisible': [('security_type','=','public')]}"/>
                 </field>
+                <field name="date_begin" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', '=', 'done')]}</attribute>
+                </field>
+                <field name="date_end" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', '=', 'done')]}</attribute>
+                </field>
             </field>
         </record>
 
@@ -64,20 +70,6 @@
             <field name="arch" type="xml">
                 <field name="category_id" position="after">
                     <field name="child_competence_ids" string="Compatence Tags" filter_domain="[('child_competence_ids', 'ilike', self)]"/>
-                </field>
-            </field>
-        </record>
-
-        <record id="view_event_form" model="ir.ui.view">
-            <field name="name">event.event.form.inherited.event_participant_dermanord</field>
-            <field name="model">event.event</field>
-            <field name="inherit_id" ref="event.view_event_form"/>
-            <field name="arch" type="xml">
-                <field name="date_begin" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state', '=', 'done')]}</attribute>
-                </field>
-                <field name="date_end" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state', '=', 'done')]}</attribute>
                 </field>
             </field>
         </record>
