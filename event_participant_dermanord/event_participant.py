@@ -227,6 +227,8 @@ class event_type(models.Model):
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
+    child_competence_ids = fields.Many2many(comodel_name='res.partner.category', compute='_get_child_competence_ids', string='Child Competences', search='_search_child_competence_ids')
+
     @api.one
     @api.depends('child_ids', 'child_ids.category_id', 'child_ids.event_type_ids', 'partner_ids', 'partner_ids.category_id', 'partner_ids.event_type_ids')
     def _get_child_competence_ids(self):
@@ -248,7 +250,12 @@ class res_partner(models.Model):
             self.child_competence_ids |= category_ids
             self.child_competence_ids |= event_type_ids.mapped('category_id')
             self.event_type_ids |= event_type_ids
-    child_competence_ids = fields.Many2many(comodel_name='res.partner.category', compute='_get_child_competence_ids', string='Child Competences', search='_search_child_competence_ids')
+
     def _search_child_competence_ids(self, operator, value):
-        registrations = self.env['event.registration'].search_read([('event_id.type.category_id', operator, value), ('event_id.state', '=', 'done'), ('state', '=', 'done')], ['id'])
-        return ['|', '|', '|', ('child_ids.category_id', operator, value), ('child_ids.participant_ids.registration_id', 'in', [r['id'] for r in registrations]), ('partner_ids.category_id', operator, value), ('partner_ids.participant_ids.registration_id', 'in', [r['id'] for r in registrations])]
+
+        domain_types = [t['id'] for t in self.env['event.type'].search_read([('category_id', operator, value)], ['id'])]
+        return ['|', '|', '|',
+                    ('child_ids.category_id', operator, value),
+                    ('child_ids.event_type_ids', 'in', domain_types),
+                    ('partner_ids.category_id', operator, value),
+                    ('partner_ids.event_type_ids', 'in', domain_types)]
