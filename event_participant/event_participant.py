@@ -65,16 +65,14 @@ class event_registration(models.Model):
     _inherit = 'event.registration'
 
     order_line_id = fields.Many2one(comodel_name="sale.order.line")
+    _participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='registration_id', string='Participants')
+    participant_ids = fields.Many2many(comodel_name='res.partner', compute='_get_participant_ids', inverse='_set_participant_ids', string='Participants')
 
     @api.one
     @api.onchange('participant_ids')
     def _nb_register(self):
         self.nb_register = len(self.participant_ids) or 1
         #~ self.order_line_id.product_uom_qty = self.nb_register
-
-    #~ participant_ids = fields.Many2many(comodel_name='res.partner', relation="event_participant",column2='partner_id',column1='registration_id',string='Participants')
-    _participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='registration_id', string='Participants')
-    participant_ids = fields.Many2many(comodel_name='res.partner', compute='_get_participant_ids', inverse='_set_participant_ids', string='Participants')
 
     # get partner ids and store into field participant_ids
     @api.one
@@ -124,21 +122,25 @@ class res_partner(models.Model):
     _inherit = 'res.partner'
 
     participant_ids = fields.One2many(comodel_name='event.participant', inverse_name='partner_id', string='Participants')
+    count_participants = fields.Integer(string='Participants', compute='_count_participants')
+    event_type_ids = fields.Many2many(comodel_name='event.type', compute='_event_type_ids', search='_search_event_type_ids', string='Event Types')
+    my_context = fields.Text(compute='_my_context')
+    
     @api.one
     def _count_participants(self):
         self.count_participants = len(self.participant_ids)
-    count_participants = fields.Integer(string='Participants', compute='_count_participants')
-
+    
     @api.one
     def _event_type_ids(self):
         self.event_type_ids = [(6,0,[e.registration_id.event_id.type.id for e in self.participant_ids if e.state == 'done'])]
-    event_type_ids = fields.Many2many(comodel_name='event.type',compute='_event_type_ids',string='Event Types')
-
+    
+    @api.model
+    def _search_event_type_ids(self, op, value):
+		return [('participant_ids.registration_id.event_id.type', op, value)]
+    
     @api.one
     def _my_context(self):
         self.my_context = self._context
-    my_context = fields.Text(compute='_my_context')
-
 
 class event_event(models.Model):
     _inherit = 'event.event'
@@ -161,7 +163,7 @@ class event_event(models.Model):
         #~ raise Warning(participants)
         self.participant_ids = [(6,0,participants)]
     participant_ids = fields.One2many(comodel_name='event.participant', compute='_participants_ids', string='Participants')
-    course_leader = fields.Many2many(comodel_name="res.partner",string="Course Leader",help="Course Leader or Main Speaker")
+    course_leader = fields.Many2many(comodel_name="res.partner", string="Course Leader", help="Course Leader or Main Speaker")
 
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
