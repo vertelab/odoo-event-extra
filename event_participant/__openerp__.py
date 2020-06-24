@@ -32,7 +32,7 @@ Add a participants list in event registration
     'author': 'Vertel AB',
     'license': 'AGPL-3',
     'website': 'http://www.vertel.se',
-    'depends': ['event', 'report', 'sale'],
+    'depends': ['event_sale', 'report'],
     'data': ['event_participant_view.xml',
             'security/ir.model.access.csv',
             'event_participant_report.xml'

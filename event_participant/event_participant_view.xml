@@ -135,6 +135,18 @@
             <field name="view_mode">tree,form</field>
             <field name="context">{'search_default_event_id': active_id, 'default_event_id': active_id}</field>
         </record>
+        
+        <record id="event_order_line_rem_onchange" model="ir.ui.view">
+            <field name="name">event.sale.order.remove.onchange</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="event_sale.event_order_line" />
+            <field name="arch" type="xml">
+                <field name="event_ticket_id" position="replace">
+                    <field name="event_ticket_id" domain="[('event_id', '=', event_id), ('seats_available', '&gt;', 0)]" attrs="{'invisible': [('event_id', '=', False)]}"/>
+                </field>
+            </field>
+        </record>
+        
         <record model="ir.ui.view" id="view_event_form_inherit">
             <field name="name">Events</field>
             <field name="model">event.event</field>

@@ -169,6 +169,7 @@ class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
     event_registration_id = fields.Many2one(comodel_name='event.registration')
+    
 
     @api.multi
     def button_confirm(self):
@@ -179,6 +180,19 @@ class sale_order_line(models.Model):
                 if registration:
                     order_line.event_registration_id = registration
                     registration.order_line_id = order_line
+                    
+    @api.onchange('event_ticket_id')
+    def onchange_event_ticket_id_v8(self):
+        if self.event_ticket_id:
+            base_currency = self.order_id.company_id.currency_id
+            price = self.event_ticket_id.price
+            pricelist = self.order_id.pricelist_id
+            _logger.warn(self.order_id.company_id)
+            _logger.warn(base_currency)
+            _logger.warn(pricelist.currency_id)
+            if pricelist.currency_id != base_currency:
+                price = base_currency.compute(price, pricelist.currency_id)
+            self.price_unit = price
 
     #~ @api.v7
     #~ def button_confirm(self, cr, uid, ids, context=None):
