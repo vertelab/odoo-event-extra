@@ -165,6 +165,12 @@ class event_event(models.Model):
     participant_ids = fields.One2many(comodel_name='event.participant', compute='_participants_ids', string='Participants')
     course_leader = fields.Many2many(comodel_name="res.partner", string="Course Leader", help="Course Leader or Main Speaker")
 
+class EventTicket(models.Model):
+    _inherit = 'event.event.ticket'
+
+    def get_ticket_currency_price(self, base_currency, currency):
+        return base_currency.compute(self.price, currency)
+
 class sale_order_line(models.Model):
     _inherit = 'sale.order.line'
 
@@ -184,16 +190,9 @@ class sale_order_line(models.Model):
     @api.onchange('event_ticket_id')
     def onchange_event_ticket_id_v8(self):
         if self.event_ticket_id:
-            base_currency = self.order_id.company_id.currency_id
-            price = self.event_ticket_id.price
-            pricelist = self.order_id.pricelist_id
-            _logger.warn(self.order_id.company_id)
-            _logger.warn(base_currency)
-            _logger.warn(pricelist.currency_id)
-            if pricelist.currency_id != base_currency:
-                price = base_currency.compute(price, pricelist.currency_id)
-            self.price_unit = price
-
+            self.price_unit = self.event_ticket_id.get_ticket_currency_price(
+                self.order_id.company_id.currency_id,
+                self.order_id.pricelist_id.currency_id)
     #~ @api.v7
     #~ def button_confirm(self, cr, uid, ids, context=None):
         #~ res = super(sale_order_line, self).button_confirm(cr, uid, ids, context=context)
