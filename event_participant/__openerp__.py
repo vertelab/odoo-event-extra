@@ -20,7 +20,7 @@
 ##############################################################################
 
 {
-    'name': 'Event Participant',
+    'name': 'Event Extra: Event Participant',
     'version': '0.1',
     'category': 'Event',
     'summary': 'Handles participants of an event',
@@ -30,7 +30,7 @@ Add a participants list in event registration
 """,
     'images': ['static/description/event_participant.jpg'],
     'author': 'Vertel AB',
-    'website': 'http://www.vertel.se',
+    'website': 'https://vertel.se/apps',
     'depends': ['event', 'report'],
     'data': ['event_participant_view.xml',
             'security/ir.model.access.csv',
