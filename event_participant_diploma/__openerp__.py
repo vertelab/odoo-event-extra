@@ -20,7 +20,7 @@
 ##############################################################################
 
 {
-    'name': 'Event Participant Diploma',
+    'name': 'Event Extra: Event Participant Diploma',
     'version': '0.3',
     'category': 'Event',
     'summary': 'Print Diplomas for participants',
